@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Categories</title>
+    <link rel="stylesheet" href="/css/main.css">
+
+</head>
+
+<body>
+    <%- include('partials/header') %>
+    <main id="main-content" role="main">
+        <h1><%= title %></h1>
+      
+        <!-- Intro -->
+        <section class="intro">
+          <h2>Our Project Categories</h2>
+          <p>
+            Our service projects are organized into four main categories. Each category
+            highlights a unique way to contribute, learn, and grow. Explore them below
+            to find opportunities that match your interests.
+          </p>
+        </section>
+      
+        <!-- Categories -->
+        <section class="categories-grid">
+          <article>
+            <h3>Environmental</h3>
+            <p>
+              Focused on sustainability, conservation, and protecting our planet.
+              Projects include clean‑up drives, recycling initiatives, and tree planting.
+            </p>
+            <a href="/projects" class="button">View Environmental Projects</a>
+          </article>
+      
+          <article>
+            <h3>Educational</h3>
+            <p>
+              Dedicated to supporting learning and academic growth. Opportunities range
+              from tutoring programs to literacy campaigns and resource development.
+            </p>
+            <a href="/projects" class="button">View Educational Projects</a>
+          </article>
+      
+          <article>
+            <h3>Community Service</h3>
+            <p>
+              Strengthening neighborhoods through volunteer work, food drives, and
+              housing support. These projects bring people together to serve locally.
+            </p>
+            <a href="/projects" class="button">View Community Service Projects</a>
+          </article>
+      
+          <article>
+            <h3>Health and Wellness</h3>
+            <p>
+              Promoting physical, mental, and social well‑being. Projects include
+              fitness workshops, awareness campaigns, and community health events.
+            </p>
+            <a href="/projects" class="button">View Health & Wellness Projects</a>
+          </article>
+        </section>
+      
+        <!-- Call to action -->
+        <section class="cta">
+          <h2>Get Started</h2>
+          <p>
+            Choose a category above to explore related projects and organizations.
+            Every effort counts toward building a stronger, healthier community.
+          </p>
+          <a href="/organizations" class="button">Meet Our Partner Organizations</a>
+        </section>
+      </main>
+      
+    <%- include('partials/footer') %>
+</body>
+
+</html>

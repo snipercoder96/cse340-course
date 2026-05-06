@@ -10,14 +10,74 @@
 
 <body>
     <%- include('partials/header') %>
-    <main>
+    <main id="main-content" role="main">
         <h1>
             <%= title %>
         </h1>
-        <!-- Put your page-specific content here -->
-        <h2>Organizations</h2>
-        <p>Coming Soon!</p>
+    
+        <!-- Intro -->
+        <section class="intro">
+            <h2>Our Partner Organizations</h2>
+            <p>
+                We collaborate with a variety of organizations that lead projects in
+                environmental sustainability, education, community service, and health.
+                These partnerships make it possible to connect volunteers with meaningful
+                opportunities and resources.
+            </p>
+        </section>
+    
+        <!-- Organization list -->
+        <section class="org-list">
+            <div class="org-list">
+                <article>
+                    <h3>Green Earth Initiative</h3>
+                    <p>
+                        Dedicated to environmental conservation, recycling programs, and
+                        sustainability education. Volunteers help with tree planting, clean‑up
+                        campaigns, and awareness workshops.
+                    </p>
+                </article>
+        
+                <article>
+                    <h3>Bright Minds Academy</h3>
+                    <p>
+                        Focused on educational support, tutoring, and resource development for
+                        students of all ages. Projects include after‑school programs and
+                        literacy campaigns.
+                    </p>
+                </article>
+        
+                <article>
+                    <h3>Community Builders Network</h3>
+                    <p>
+                        A coalition of local groups working to strengthen neighborhoods through
+                        service projects, food drives, and housing support initiatives.
+                    </p>
+                </article>
+        
+                <article>
+                    <h3>Wellness for All Foundation</h3>
+                    <p>
+                        Promotes health and wellness through fitness workshops, mental health
+                        awareness events, and community clinics. Volunteers assist with outreach
+                        and event coordination.
+                    </p>
+                </article>
+            </div>
+        </section>
+    
+        <!-- Call to action -->
+        <section class="cta">
+            <h2>Join an Organization</h2>
+            <p>
+                Interested in partnering or volunteering? Explore the categories to find
+                organizations that align with your passions. Each group offers unique
+                opportunities to serve and grow.
+            </p>
+            <a href="/projects" class="button">View Current Projects</a>
+        </section>
     </main>
+      
     <%- include('partials/footer') %>
 </body>
 

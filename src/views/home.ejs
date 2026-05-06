@@ -11,14 +11,70 @@
 
 <body>
     <%- include('partials/header') %>
-    <main>
+    <main id="main-content" role="main">
         <h1>
             <%= title %>
         </h1>
-        <!-- Put your page-specific content here -->
-        <h2>Home Page</h2>
-        <p>Coming Soon!</p>
+    
+        <!-- Hero / Intro -->
+        <section class="hero">
+            <h2>Welcome to Our Service Project Hub</h2>
+            <p>
+                Discover opportunities to learn, serve, and grow. This site is your starting point
+                for exploring projects that make a difference in the environment, education,
+                community, and health.
+            </p>
+        </section>
+    
+        <!-- About section -->
+        <section class="about">
+            <h2>About This Site</h2>
+            <p>
+                Our mission is to connect people with meaningful projects. Whether you’re looking
+                to volunteer, gain experience, or simply learn more, each category highlights
+                ways you can contribute and grow.
+            </p>
+            <p>
+                Built with modern web technologies, this site is part of our CSE 340 coursework
+                and demonstrates how backend development can power dynamic, community‑focused
+                applications.
+            </p>
+        </section>
+    
+        <!-- Categories preview -->
+        <section class="categories">
+            <h2>Explore Categories</h2>
+            <div class="categories-grid">
+                <article>
+                    <h3>Environmental</h3>
+                    <p>Join sustainability projects, conservation efforts, and eco‑friendly initiatives.</p>
+                </article>
+                <article>
+                    <h3>Educational</h3>
+                    <p>Support learning programs, tutoring, and resources for students of all ages.</p>
+                </article>
+                <article>
+                    <h3>Community Service</h3>
+                    <p>Volunteer in local projects that strengthen neighborhoods and build connections.</p>
+                </article>
+                <article>
+                    <h3>Health and Wellness</h3>
+                    <p>Promote physical, mental, and social well‑being through workshops and activities.</p>
+                </article>
+            </div>
+        </section>
+    
+        <!-- Call to action -->
+        <section class="cta">
+            <h2>Get Involved Today</h2>
+            <p>
+                Explore the categories above to learn more. Each page will provide details,
+                upcoming opportunities, and ways to participate. Together, we can make a lasting impact.
+            </p>
+            <a href="/categories" class="button">View All Categories</a>
+        </section>
     </main>
+      
     <%- include('partials/footer') %>
 </body>
 
