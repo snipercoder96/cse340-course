@@ -295,6 +295,16 @@ article p {
     margin-bottom: var(--space-md);
 }
 
+.org-image {
+    width: 100%;
+    max-width: 150px;
+    max-height: 150px;
+    height: auto;
+    margin-bottom: var(--space-md);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+}
+
 /* ===========================
    BUTTONS & CALL-TO-ACTION
    =========================== */
@@ -422,6 +432,10 @@ footer a:hover {
     section {
         margin-bottom: var(--space-2xl);
     }
+
+    .org-image {
+        max-width: 120px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -460,6 +474,10 @@ footer a:hover {
 
     footer {
         padding: var(--space-lg);
+    }
+
+    .org-image {
+        max-width: 100px;
     }
 }
 

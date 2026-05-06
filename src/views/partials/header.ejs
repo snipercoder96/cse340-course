@@ -1,26 +1,40 @@
-<a href="#main-content" class="skip-link">Skip to main content</a>
+<!DOCTYPE html>
+<html lang="en">
 
-<nav role="navigation" aria-label="Main navigation">
-    <ul role="menubar">
-        <li role="none">
-            <a href="/" role="menuitem" aria-current="<%= page === 'home' ? 'page' : 'false' %>">
-                <span aria-hidden="false">🏠</span> Home
-            </a>
-        </li>
-        <li role="none">
-            <a href="/organizations" role="menuitem" aria-current="<%= page === 'organizations' ? 'page' : 'false' %>">
-                <span aria-hidden="false">🤝</span> Organizations
-            </a>
-        </li>
-        <li role="none">
-            <a href="/projects" role="menuitem" aria-current="<%= page === 'projects' ? 'page' : 'false' %>">
-                <span aria-hidden="false">📋</span> Projects
-            </a>
-        </li>
-        <li role="none">
-            <a href="/categories" role="menuitem" aria-current="<%= page === 'categories' ? 'page' : 'false' %>">
-                <span aria-hidden="false">📂</span> Categories
-            </a>
-        </li>
-    </ul>
-</nav>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+    <link rel="stylesheet" href="/css/main.css">
+</head>
+
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <nav role="navigation" aria-label="Main navigation">
+        <ul role="menubar">
+            <li role="none">
+                <a href="/" role="menuitem" aria-current="<%= page === 'home' ? 'page' : 'false' %>">
+                    <span aria-hidden="false">🏠</span> Home
+                </a>
+            </li>
+            <li role="none">
+                <a href="/organizations" role="menuitem"
+                    aria-current="<%= page === 'organizations' ? 'page' : 'false' %>">
+                    <span aria-hidden="false">🤝</span> Organizations
+                </a>
+            </li>
+            <li role="none">
+                <a href="/projects" role="menuitem" aria-current="<%= page === 'projects' ? 'page' : 'false' %>">
+                    <span aria-hidden="false">📋</span> Projects
+                </a>
+            </li>
+            <li role="none">
+                <a href="/categories" role="menuitem" aria-current="<%= page === 'categories' ? 'page' : 'false' %>">
+                    <span aria-hidden="false">📂</span> Categories
+                </a>
+            </li>
+        </ul>
+    </nav>
