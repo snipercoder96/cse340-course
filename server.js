@@ -42,7 +42,7 @@ const startServer = async () => {
         console.log(`Server is running at http://127.0.0.1:${port}`);
         console.log(`Environment: ${nodeEnv}`);
     } catch (err) {
-        console.error('Error starting server:', err);
+        console.error(`Error starting server: ${err}`);
     }
 };
 
