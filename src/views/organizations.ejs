@@ -18,36 +18,21 @@
         <!-- Organization list -->
         <section class="org-list">
             <div class="org-list">
-                <article>
-                    <img src="/images/green-earth.jpg" alt="Green Earth Initiative logo" class="org-image">
-                    <h3>Green Earth Initiative</h3>
-                    <p>
-                        Dedicated to environmental conservation, recycling programs, and
-                        sustainability education. Volunteers help with tree planting, clean‑up
-                        campaigns, and awareness workshops.
-                    </p>
-                </article>
-        
-                <article>
-                    <img src="/images/bright-minds.jpg" alt="Bright Minds Academy logo" class="org-image">
-                    <h3>Bright Minds Academy</h3>
-                    <p>
-                        Focused on educational support, tutoring, and resource development for
-                        students of all ages. Projects include after‑school programs and
-                        literacy campaigns.
-                    </p>
-                </article>
-        
-                <article>
-                    <img src="/images/community-builders.jpg" alt="Community Builders Network logo" class="org-image">
-                    <h3>Community Builders Network</h3>
-                    <p>
-                        A coalition of local groups working to strengthen neighborhoods through
-                        service projects, food drives, and housing support initiatives.
-                    </p>
-                </article>
-            </div>
-        </section>
+                <% organizations.forEach(org=> { %>
+                    <article>
+                        <img src="/images/<%= org.logo_filename %>" alt="<%= org.name %> logo" class="org-image">
+                        <h3>
+                            <%= org.name %>
+                        </h3>
+                        <p>
+                            <%= org.description %>
+                        </p>
+                        <a href="<%= org.contact_email %>">
+                            <%= org.name %>
+                        </a>
+                    </article>
+                    <% }) %>
+            </div></section>
 
         <!-- Call to action -->
         <section class="cta">
