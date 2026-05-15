@@ -1,8 +1,10 @@
 import express from 'express';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import 'dotenv/config';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
+import { getAllProjects } from './src/models/projects.js';
 
 const nodeEnv = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
@@ -41,6 +43,21 @@ app.get('/categories', (req, res) => {
     res.render('categories', { title: 'Project Categories', page: 'categories' });
 });
 
+app.get('/services', async (req, res) => {
+    console.log('Rendering services page');
+
+    try {
+        const projects = await getAllProjects();
+        res.render('services', {
+            title: 'Project Services',
+            page: 'services',
+            projects
+        });
+    } catch (error) {
+        console.error('Error rendering services:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
 
 // start the server with async/await and error handling incase of issues
 app.listen(PORT, async () => {
