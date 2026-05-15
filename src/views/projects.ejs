@@ -4,109 +4,46 @@
             <%= title %>
         </h1>
 
-        <!-- Intro -->
         <section class="intro">
             <h2>Our Service Projects</h2>
             <p>
-                Explore current and upcoming projects across different categories. Each project
-                offers unique opportunities to get involved, learn new skills, and make a
-                positive impact in the community.
+                Below are the current projects pulled from the database. Each one includes a
+                location and projected date to help you choose where to get involved.
             </p>
         </section>
 
-        <!-- Environmental Projects -->
-        <section class="category">
-            <h2>Environmental</h2>
-            <div class="project-list">
-                <article>
-                    <h3>Neighborhood Clean‑Up</h3>
-                    <p>
-                        Volunteers gather monthly to remove litter, recycle materials, and beautify
-                        local parks and streets.
-                    </p>
-                </article>
-                <article>
-                    <h3>Tree Planting Drive</h3>
-                    <p>
-                        Partnering with Green Earth Initiative, this project aims to plant 500 trees
-                        in urban areas to improve air quality and provide shade.
-                    </p>
-                </article>
-            </div>
-        </section>
+        <% if (projects && projects.length) { %>
+            <section class="project-list">
+                <% projects.forEach(project=> { %>
+                    <article class="project-card">
+                        <h2>
+                            <%= project.title %>
+                        </h2>
+                        <p>
+                            <%= project.description %>
+                        </p>
+                        <p><strong>Location:</strong>
+                            <%= project.location %>
+                        </p>
+                        <p><strong>Project Date:</strong>
+                            <%= project.project_date ? new Date(project.project_date).toLocaleDateString() : 'TBA' %>
+                        </p>
+                    </article>
+                    <% }) %>
+            </section>
+            <% } else { %>
+                <section class="empty-state">
+                    <p>No projects are available at the moment. Please check back later.</p>
+                </section>
+                <% } %>
 
-        <!-- Educational Projects -->
-        <section class="category">
-            <h2>Educational</h2>
-            <div class="project-list">
-                <article>
-                    <h3>After‑School Tutoring</h3>
-                    <p>
-                        Volunteers provide homework help and mentoring for elementary and high school
-                        students in underserved communities.
-                    </p>
-                </article>
-                <article>
-                    <h3>Literacy Campaign</h3>
-                    <p>
-                        A reading program designed to improve literacy rates by distributing books
-                        and hosting weekly reading circles.
-                    </p>
-                </article>
-            </div>
-        </section>
-
-        <!-- Community Service Projects -->
-        <section class="category">
-            <h2>Community Service</h2>
-            <div class="project-list">
-                <article>
-                    <h3>Food Drive</h3>
-                    <p>
-                        Collecting non‑perishable food items to support local shelters and families
-                        in need.
-                    </p>
-                </article>
-                <article>
-                    <h3>Neighborhood Repair</h3>
-                    <p>
-                        Volunteers assist with minor home repairs and maintenance for elderly
-                        residents and those with limited resources.
-                    </p>
-                </article>
-            </div>
-        </section>
-
-        <!-- Health and Wellness Projects -->
-        <section class="category">
-            <h2>Health and Wellness</h2>
-            <div class="project-list">
-                <article>
-                    <h3>Community Fitness Workshops</h3>
-                    <p>
-                        Free weekly sessions promoting physical activity, nutrition, and healthy
-                        living habits.
-                    </p>
-                </article>
-                <article>
-                    <h3>Mental Health Awareness Week</h3>
-                    <p>
-                        A series of events and workshops to reduce stigma, provide resources, and
-                        encourage open conversations about mental health.
-                    </p>
-                </article>
-            </div>
-        </section>
-
-        <!-- Call to action -->
-        <section class="cta">
-            <h2>Get Involved</h2>
-            <p>
-                Browse the categories above and choose a project that inspires you. Your time
-                and effort can make a lasting difference.
-            </p>
-            <a href="/organizations" class="button">Meet Our Partner Organizations</a>
-        </section>
+                    <section class="cta">
+                        <h2>Want to see more?</h2>
+                        <p>
+                            Learn about our partner organizations or explore additional project categories.
+                        </p>
+                        <a href="/organizations" class="button">Meet Our Partner Organizations</a>
+                    </section>
     </main>
 
     <%- include('partials/footer') %>

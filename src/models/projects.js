@@ -9,6 +9,7 @@ const getAllProjects = async () => {
 
     const result = await db.query(query);
 
+    // return the rows so callers can render actual project data
     return result.rows;
 }
 

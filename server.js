@@ -35,28 +35,23 @@ app.get('/organizations', async (req, res) => {
     res.render('organizations', { title, organizations, page: 'organizations' });
 });
 
-app.get('/projects', (req, res) => {
-    res.render('projects', { title: 'Service Projects', page: 'projects' });
+app.get('/projects', async (req, res) => {
+    try {
+        const projects = await getAllProjects();
+        res.render('projects', { title: 'Service Projects', page: 'projects', projects });
+    } catch (error) {
+        console.error('Error rendering projects:', error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.get('/categories', (req, res) => {
     res.render('categories', { title: 'Project Categories', page: 'categories' });
 });
 
-app.get('/services', async (req, res) => {
-    console.log('Rendering services page');
-
-    try {
-        const projects = await getAllProjects();
-        res.render('services', {
-            title: 'Project Services',
-            page: 'services',
-            projects
-        });
-    } catch (error) {
-        console.error('Error rendering services:', error);
-        res.status(500).send('Internal Server Error');
-    }
+app.get('/services', (req, res) => {
+    // Services is a static informational page; project listings are served on /projects
+    res.render('services', { title: 'Our Services', page: 'services' });
 });
 
 // start the server with async/await and error handling incase of issues
