@@ -40,7 +40,7 @@ app.get('/projects', async (req, res) => {
         const projects = await getAllProjects();
         res.render('projects', { title: 'Service Projects', page: 'projects', projects });
     } catch (error) {
-        console.error('Error rendering projects:', error);
+        console.error('Error rendering projects:', error.stack || error);
         res.status(500).send('Internal Server Error');
     }
 });
