@@ -123,3 +123,59 @@ VALUES
  'Offering free tutoring sessions to improve literacy rates.',
  'Soweto Library',
  '2026-10-28');
+
+
+-- ========================================
+-- Category Table
+-- ========================================
+CREATE TABLE category (
+    category_id SERIAL PRIMARY KEY,       -- Auto-incrementing ID
+    name VARCHAR(100) UNIQUE NOT NULL     -- Category name must be unique
+);
+
+-- Insert sample categories
+INSERT INTO category (name)
+VALUES
+('Environmental'),
+('Educational'),
+('Community Service');
+
+-- ========================================
+-- Project_Category Junction Table
+-- ========================================
+CREATE TABLE project_category (
+    project_id INT NOT NULL,
+    category_id INT NOT NULL,
+    CONSTRAINT fk_project
+        FOREIGN KEY (project_id)
+        REFERENCES project (project_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_category
+        FOREIGN KEY (category_id)
+        REFERENCES category (category_id)
+        ON DELETE CASCADE,
+    CONSTRAINT pk_project_category PRIMARY KEY (project_id, category_id)
+);
+
+-- ========================================
+-- Associate Projects with Categories
+-- ========================================
+-- Example associations (adjust project_id values to match your seeded projects)
+INSERT INTO project_category (project_id, category_id) VALUES
+(1, 1),  -- Community Park Renovation → Environmental
+(2, 3),  -- School Roof Repair → Community Service
+(3, 1),  -- Water Well Construction → Environmental
+(4, 2),  -- Community Center Expansion → Educational
+(5, 3),  -- Playground Safety Upgrade → Community Service
+
+(6, 1),  -- Urban Garden Setup → Environmental
+(7, 1),  -- Community Compost Program → Environmental
+(8, 2),  -- School Garden Project → Educational
+(9, 2),  -- Hydroponics Workshop → Educational
+(10, 3), -- Neighborhood Farmers Market → Community Service
+
+(11, 3), -- Food Drive → Community Service
+(12, 3), -- Clothing Donation Campaign → Community Service
+(13, 3), -- Senior Home Assistance → Community Service
+(14, 1), -- Neighborhood Clean-Up → Environmental
+(15, 2); -- Literacy Tutoring → Educational

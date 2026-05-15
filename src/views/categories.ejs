@@ -15,42 +15,18 @@
     </section>
 
     <!-- Categories -->
-    <section class="categories-grid">
-      <article>
-        <h3>Environmental</h3>
-        <p>
-          Focused on sustainability, conservation, and protecting our planet.
-          Projects include clean‑up drives, recycling initiatives, and tree planting.
-        </p>
-        <a href="/projects" class="button">View Environmental Projects</a>
-      </article>
-
-      <article>
-        <h3>Educational</h3>
-        <p>
-          Dedicated to supporting learning and academic growth. Opportunities range
-          from tutoring programs to literacy campaigns and resource development.
-        </p>
-        <a href="/projects" class="button">View Educational Projects</a>
-      </article>
-
-      <article>
-        <h3>Community Service</h3>
-        <p>
-          Strengthening neighborhoods through volunteer work, food drives, and
-          housing support. These projects bring people together to serve locally.
-        </p>
-        <a href="/projects" class="button">View Community Service Projects</a>
-      </article>
-
-      <article>
-        <h3>Health and Wellness</h3>
-        <p>
-          Promoting physical, mental, and social well‑being. Projects include
-          fitness workshops, awareness campaigns, and community health events.
-        </p>
-        <a href="/projects" class="button">View Health & Wellness Projects</a>
-      </article>
+    <section class="categories-list">
+      <% if (categories && categories.length) { %>
+        <ul>
+          <% categories.forEach(category=> { %>
+            <li>
+              <%= category.name %>
+            </li>
+            <% }) %>
+        </ul>
+        <% } else { %>
+          <p>No categories are available at the moment.</p>
+          <% } %>
     </section>
 
     <!-- Call to action -->

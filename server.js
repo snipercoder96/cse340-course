@@ -5,6 +5,7 @@ import 'dotenv/config';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
 import { getAllProjects } from './src/models/projects.js';
+import { getAllCategories } from './src/models/categories.js';
 
 const nodeEnv = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
@@ -45,8 +46,14 @@ app.get('/projects', async (req, res) => {
     }
 });
 
-app.get('/categories', (req, res) => {
-    res.render('categories', { title: 'Project Categories', page: 'categories' });
+app.get('/categories', async (req, res) => {
+    try {
+        const categories = await getAllCategories();
+        res.render('categories', { title: 'Project Categories', page: 'categories', categories });
+    } catch (error) {
+        console.error('Error rendering categories:', error.stack || error);
+        res.status(500).send('Internal Server Error');
+    }
 });
 
 app.get('/services', (req, res) => {
