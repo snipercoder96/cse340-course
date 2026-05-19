@@ -3,9 +3,8 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import 'dotenv/config';
 import { testConnection } from './src/models/db.js';
-import { getAllOrganizations } from './src/models/organizations.js';
-import { getAllProjects } from './src/models/projects.js';
-import { getAllCategories } from './src/models/categories.js';
+import router from './routes.js';
+
 
 const nodeEnv = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
@@ -23,42 +22,14 @@ app.set('views', path.join(__dirname, 'src/views'));
 app.use(express.static(path.join(__dirname, 'public')));
 console.log(`Serving static files from: ${path.join(__dirname, 'public')}`);
 
-// Routes (arrow functions)
-app.get('/', (req, res) => {
-    res.render('home', { title: 'Home', page: 'home' });
-});
+// Import and use routes
+app.use(router);
 
-app.get('/organizations', async (req, res) => {
-    const organizations = await getAllOrganizations();
-    console.log(organizations);
-
-    const title = 'Our Partner Organizations';
-    res.render('organizations', { title, organizations, page: 'organizations' });
-});
-
-app.get('/projects', async (req, res) => {
-    try {
-        const projects = await getAllProjects();
-        res.render('projects', { title: 'Service Projects', page: 'projects', projects });
-    } catch (error) {
-        console.error('Error rendering projects:', error.stack || error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-app.get('/categories', async (req, res) => {
-    try {
-        const categories = await getAllCategories();
-        res.render('categories', { title: 'Project Categories', page: 'categories', categories });
-    } catch (error) {
-        console.error('Error rendering categories:', error.stack || error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-app.get('/services', (req, res) => {
-    // Services is a static informational page; project listings are served on /projects
-    res.render('services', { title: 'Our Services', page: 'services' });
+// Catch-all middleware for 404 errors - must be placed after all routes
+app.use((req, res, next) => {
+  const err = new Error('Page Not Found');
+  err.status = 404;
+  next(err);
 });
 
 // start the server with async/await and error handling incase of issues
