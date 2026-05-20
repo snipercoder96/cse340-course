@@ -30,7 +30,8 @@ const globalErrorHandler = async (err, req, res, next) => {
         title: status === 404 ? 'Page Not Found' : 'Server Error',
         page: status === 404 ? '404' : '500',
         error: err.message,
-        stack: err.stack
+        stack: err.stack,
+        nodeEnv: process.env.NODE_ENV?.toLowerCase() || 'production'
     };
 
     // Render the appropriate error template

@@ -25,13 +25,6 @@ console.log(`Serving static files from: ${path.join(__dirname, 'public')}`);
 // Import and use routes
 app.use(router);
 
-// Catch-all middleware for 404 errors - must be placed after all routes
-app.use((req, res, next) => {
-  const err = new Error('Page Not Found');
-  err.status = 404;
-  next(err);
-});
-
 // start the server with async/await and error handling incase of issues
 app.listen(PORT, async () => {
     try {

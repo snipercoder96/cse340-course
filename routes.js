@@ -15,7 +15,13 @@ router.get('/projects', projectController);
 router.get('/categories', categoriesController);
 
 // error-handling routes
-router.get('/test-error', testErrorPage);
-router.get('/errors', allErrorRoutesController, globalErrorHandler);
+router.get('/test-error', testErrorPage, globalErrorHandler); // just to test the 500 error page, this route will intentionally throw an error to demonstrate the error handling mechanism
+router.get('/errors', allErrorRoutesController, globalErrorHandler); // this handles any route that is not defined above, it will trigger the 404 error page, and if there is any error in the process it will be handled by the globalErrorHandler
+
+// Catch-all 404 handler for undefined routes
+router.use(allErrorRoutesController, globalErrorHandler);
 
 export default router;
+
+
+// where all the routes are defined and exported to be used in server.js
