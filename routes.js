@@ -14,7 +14,7 @@ router.get('/organizations', organizationsController);
 
 router.get('/projects', projectController);
 router.get('/categories', categoriesController);
-router.get('/organizations/:id', showOrganizationDetailsPage);
+router.get('/organization/:id', showOrganizationDetailsPage);
 
 // error-handling routes
 router.get('/test-error', testErrorPage, globalErrorHandler); // just to test the 500 error page, this route will intentionally throw an error to demonstrate the error handling mechanism

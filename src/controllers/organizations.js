@@ -18,7 +18,7 @@ const showOrganizationDetailsPage = async (req, res) => {
     const projects = await getProjectsByOrganizationId(organizationId); // returns rows with project details for the specified organization, including project name, description, and category
     const title = 'Organization Details';
 
-    res.render('organization', { title, organizationDetails, projects });
+    res.render('organization', { title, organizationDetails, projects, page: 'organization' });
 };
 
 export { organizationsController, showOrganizationDetailsPage };
