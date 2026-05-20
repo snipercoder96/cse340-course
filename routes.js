@@ -6,12 +6,13 @@ import { projectController }  from './src/controllers/projects.js';
 import { categoriesController }  from './src/controllers/categories.js';
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
 import { showOrganizationDetailsPage } from './src/controllers/organizations.js';
+import { servicesController } from './src/controllers/services.js';
 
 const router = express.Router();
 
 router.get('/', homeController);
 router.get('/organizations', organizationsController);
-
+router.get('/services', servicesController);
 router.get('/projects', projectController);
 router.get('/categories', categoriesController);
 router.get('/organization/:id', showOrganizationDetailsPage);
