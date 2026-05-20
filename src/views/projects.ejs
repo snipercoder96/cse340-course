@@ -25,9 +25,13 @@
                         <p><strong>Location:</strong>
                             <%= project.location %>
                         </p>
+                        <p><strong>Partner Organization:</strong>
+                            <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>
+                        </p>
                         <p><strong>Project Date:</strong>
                             <%= project.project_date ? new Date(project.project_date).toLocaleDateString() : 'TBA' %>
                         </p>
+                        <a href="/project/<%= project.project_id %>" class="button">View Details</a>
                     </article>
                     <% }) %>
             </section>

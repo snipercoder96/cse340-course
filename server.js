@@ -14,6 +14,12 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Make nodeEnv available to all EJS templates via res.locals
+app.use((req, res, next) => {
+    res.locals.nodeEnv = process.env.NODE_ENV?.toLowerCase() || 'production';
+    next();
+});
+
 // Set EJS as the templating engine for rendering views
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));

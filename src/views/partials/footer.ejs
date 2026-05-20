@@ -3,6 +3,11 @@
         <p>
             &copy; <%= new Date().getFullYear() %> <strong>CSE 340 Service Network</strong>.
                 All rights reserved.
+
+            <% if(nodeEnv === 'development') { %>
+                <br>
+                <small>Development Mode</small>
+            <% } %>
         </p>
         <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.8); margin: var(--space-md) 0 0 0;">
             <a href="#" style="color: inherit;">Privacy Policy</a> ·
