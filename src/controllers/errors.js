@@ -16,7 +16,7 @@ const testErrorPage = (req, res, next) => {
     err.status = 500;
     next(err);
 };
-// Global error handler
+// Global error handler, that catches all errors and renders the appropriate error page based on the status code (404 or 500)
 const globalErrorHandler = async (err, req, res, next) => {
     // Log error details for debugging
     console.error('Error occurred:', err.message);

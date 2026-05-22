@@ -1,0 +1,13 @@
+<%- include('partials/header') %>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+
+        <h2>
+            <%= `Our ${category.name} Projects` %>
+        </h2>
+        <img src="/images/<%= category.logo_filename %>" alt="<%= category.name %> logo">
+        <p>Description: <%= category.description %></p>
+    </main>
+<%- include('partials/footer') %>

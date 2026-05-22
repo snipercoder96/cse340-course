@@ -16,10 +16,17 @@
              <p><strong>Location:</strong>
                  <%= project.location %>
              </p>
-             <p><strong>Description:</strong>
-                 <%= project.description %>
-             </p>
-             <% } else { %>
+              <p><strong>Description:</strong>
+                  <%= project.description %>
+              </p>
+              <% if (project.categories && project.categories.length > 0) { %>
+              <p><strong>Categories:</strong>
+                  <% project.categories.forEach(function(cat) { %>
+                      <a href="/category/<%= cat.category_id %>"><%= cat.name %></a>
+                  <% }); %>
+              </p>
+              <% } %>
+              <% } else { %>
                 <p>Project not found.</p>
                 <%} %>
         

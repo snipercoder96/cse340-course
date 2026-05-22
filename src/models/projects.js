@@ -55,16 +55,27 @@ const getUpcomingProjects = async (number_of_projects) => {
 
 const getProjectDetails = async (projectId) => {
     const query = `
-        SELECT p.project_id, p.organization_id, p.title, p.description, p.location, p.project_date, o.name as organization_name
+        SELECT p.project_id, p.organization_id, p.title, p.description, p.location, p.project_date,
+               o.name as organization_name,
+               c.category_id, c.name as category_name, c.logo_filename
         FROM public.project p
         JOIN public.organization o ON p.organization_id = o.organization_id
+        LEFT JOIN public.project_category pc ON p.project_id = pc.project_id
+        LEFT JOIN public.category c ON pc.category_id = c.category_id
         WHERE p.project_id = $1;
     `;
 
     const queryParams = [projectId];
     const result = await db.query(query, queryParams);
 
-    return result.rows[0];  
+    const row = result.rows[0];
+    if (!row) return null;
+
+    const categories = result.rows
+        .filter(r => r.category_id !== null)
+        .map(r => ({ category_id: r.category_id, name: r.category_name, logo_filename: r.logo_filename }));
+
+    return { ...row, categories };
 }
    
 

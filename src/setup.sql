@@ -130,15 +130,17 @@ VALUES
 -- ========================================
 CREATE TABLE category (
     category_id SERIAL PRIMARY KEY,       -- Auto-incrementing ID
-    name VARCHAR(100) UNIQUE NOT NULL     -- Category name must be unique
+    name VARCHAR(100) UNIQUE NOT NULL,  -- Category name must be unique
+    description TEXT NOT NULL,            -- Category description
+    logo_filename VARCHAR(255) NOT NULL   -- Logo filename
 );
 
 -- Insert sample categories
-INSERT INTO category (name)
+INSERT INTO category (name, description, logo_filename)
 VALUES
-('Environmental'),
-('Educational'),
-('Community Service');
+('Environmental', 'Projects focused on protecting and preserving the natural environment.', 'green-earth.jpg'),
+('Educational', 'Learning and skill-building initiatives for personal and community growth.', 'bright-minds.jpg'),
+('Community Service', 'Volunteer projects that strengthen and serve local neighborhoods.', 'community-builders.jpg');
 
 -- ========================================
 -- Project_Category Junction Table
