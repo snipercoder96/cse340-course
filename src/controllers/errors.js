@@ -1,3 +1,4 @@
+// renders the 404 page when a route is not found and handles all errors globally, including 500 errors
 const errorController = (req, res) => {
     res.status(404).render('404', { title: 'Page Not Found', page: '404' });
 };
@@ -23,7 +24,7 @@ const globalErrorHandler = async (err, req, res, next) => {
 
     // Determine status and template
     const status = err.status || 500; // this line says if err.status is defined use it, otherwise use 500
-    const template = status === 404 ? '404' : '500'; // this line says if status is 404 use the 404 template, otherwise use the 500 template
+    const template = status === 404 ? '404' : '500'; // this line says if status is 404 use the 404 page, otherwise use the 500 page
 
     // Prepare data for the template
     const context = {
