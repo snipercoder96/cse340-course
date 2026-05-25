@@ -5,7 +5,7 @@ import { organizationsController, processNewOrganizationForm } from './src/contr
 import { projectController, showProjectDetailsPage }  from './src/controllers/projects.js';
 import { categoriesController, showSingleCategory }  from './src/controllers/categories.js';
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
-import { showOrganizationDetailsPage, showNewOrganizationForm } from './src/controllers/organizations.js';
+import { showOrganizationDetailsPage, showNewOrganizationForm, organizationValidationRules } from './src/controllers/organizations.js';
 import { servicesController } from './src/controllers/services.js';
 
 
@@ -18,7 +18,7 @@ router.get('/projects', projectController);
 router.get('/categories', categoriesController);
 router.get('/organization/:id', showOrganizationDetailsPage);
 router.get('/new-organization', showNewOrganizationForm); // shows new form to create a new organization, this is a GET route because it just renders the form, the actual creation of the organization will be handled in a POST route that will be defined in the future when we implement the form submission functionality
-router.post('/new-organization', processNewOrganizationForm);
+router.post('/new-organization', organizationValidationRules, processNewOrganizationForm);
 router.get('/project/:id', showProjectDetailsPage);
 router.get('/category/:id', showSingleCategory);
 // error-handling routes

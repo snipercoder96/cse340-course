@@ -2,6 +2,7 @@ import { response } from "express";
 import { getAllOrganizations, getOrganizationDetails, createOrganization } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 import flash from '../middleware/flash.js';
+import { body, validationResult } from 'express-validator';
 
 const organizationsController = async (req, res) => {
     try {
@@ -31,33 +32,50 @@ const showNewOrganizationForm = async (req, res) => {
 const processNewOrganizationForm = async (req, res) => {
     const { name, description, contactEmail } = req.body;
 
-    // Basic validation: check if fields are empty
-    if (!name || !description || !contactEmail) {
-        // Option 1: re-render the form with an error message
-        return res.render('new-organization', {
-            title: 'Add a New Organization',
-            page: 'new-organization',
-            error: 'All fields are required.',
-            formData: { name, description, contactEmail }
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - loop through errors
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
         });
+        return res.redirect('/new-organization');
     }
 
-    const logoFilename = 'placeholder-logo.png';
+    const logoFilename = 'placeholder-logo.png'; // insstead of having dropping images we used default here, in the future we can implement file upload functionality to allow users to upload their own logos for their organizations, and then we would save the uploaded file and use its filename here instead of the placeholder
 
-    try {
-        const organizationId = await createOrganization(
-            name,
-            description,
-            contactEmail,
-            logoFilename
-        );
-        req.flash('success', 'Organization added successfully!'); // check error
-        res.redirect(`/organization/${organizationId}`);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send('Error creating organization');
-    }
+    const organizationId = await createOrganization(
+        name,
+        description,
+        contactEmail,
+        logoFilename
+    );
+    req.flash('success', 'Organization added successfully!'); // check error
+    res.redirect(`/organization/${organizationId}`);
+    
 };
 
+const organizationValidationRules = [
+    body('name')
+        .notEmpty()
+        .withMessage('Name is required')
+        .trim()
+        .isLength({ min: 3, max: 150 })
+        .withMessage('Organization name must be between 3 and 150 characters'),
+    body('description')
+        .notEmpty()
+        .withMessage('Description is required')
+        .trim()
+        .isLength({ max: 500 })
+        .withMessage('Description must be at most 500 characters'),
+    body('contactEmail')
+        .notEmpty()
+        .withMessage('Contact email is required')
+        .isEmail()
+        .withMessage('Invalid email format')
+        .normalizeEmail()
+  ];
 
-export { organizationsController, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm };
+
+export { 
+    organizationsController, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidationRules 
+};

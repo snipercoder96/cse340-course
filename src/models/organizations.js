@@ -1,4 +1,4 @@
-import db from './db.js'
+import db from './db.js';
 
 const getAllOrganizations = async () => {
     const query = `
@@ -11,7 +11,11 @@ const getAllOrganizations = async () => {
     return result.rows;
 }
 
-// New function addedd here to get details of a specific organization by its ID, this will be used in the organization details page
+/**
+ * Gets details of a specific organization by its ID.
+ * @param {string} organizationId - The ID of the organization to retrieve.
+ * @returns {Promise<Object|null>} A promise resolving to the organization details or null if not found.
+ */
 const getOrganizationDetails = async (organizationId) => {
   const query = `
   SELECT
@@ -60,4 +64,4 @@ const createOrganization = async (name, description, contactEmail, logoFilename)
   return result.rows[0].organization_id;
 };
 
-export { getAllOrganizations, getOrganizationDetails, createOrganization }  
+export { getAllOrganizations, getOrganizationDetails, createOrganization };  
