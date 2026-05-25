@@ -28,11 +28,33 @@ const showNewOrganizationForm = async (req, res) => {
 }
 
 const processNewOrganizationForm = async (req, res) => {
-    const { name, description, contactEmail } = req.body; // get the form data from the request body, this assumes that the form fields are named 'name', 'description', and 'contactEmail'
-    const logoFilename = 'placeholder-logo.png'; // Use the placeholder logo for all new organizations
+    const { name, description, contactEmail } = req.body;
 
-    const organizationId = await createOrganization(name, description, contactEmail, logoFilename);
-    res.redirect(`/organization/${organizationId}`); // redirect to the details page of the newly created organization, this assumes that there is a route defined to handle GET requests to /organization/:id which will render the organization details page using the showOrganizationDetailsPage controller
+    // Basic validation: check if fields are empty
+    if (!name || !description || !contactEmail) {
+        // Option 1: re-render the form with an error message
+        return res.render('new-organization', {
+            title: 'Add a New Organization',
+            error: 'All fields are required.',
+            formData: { name, description, contactEmail }
+        });
+    }
+
+    const logoFilename = 'placeholder-logo.png';
+
+    try {
+        const organizationId = await createOrganization(
+            name,
+            description,
+            contactEmail,
+            logoFilename
+        );
+        res.redirect(`/organization/${organizationId}`);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error creating organization');
+    }
 };
+  
 
 export { organizationsController, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm };

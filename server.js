@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 
 // Set EJS as the templating engine for rendering views
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'src/views'));
+app.set('views', path.join(__dirname, 'src/views')); // Set the directory for EJS templates to 'src/views'
 
 // Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
