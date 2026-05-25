@@ -1,5 +1,5 @@
 import { response } from "express";
-import { getAllOrganizations, getOrganizationDetails } from '../models/organizations.js';
+import { getAllOrganizations, getOrganizationDetails, createOrganization } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 
 const organizationsController = async (req, res) => {
@@ -21,4 +21,18 @@ const showOrganizationDetailsPage = async (req, res) => {
     res.render('organization', { title, organizationDetails, projects, page: 'organization' });
 };
 
-export { organizationsController, showOrganizationDetailsPage };
+const showNewOrganizationForm = async (req, res) => {
+    const title = 'Add New Organization';
+
+    res.render('new-organization', { title, page: 'new-organization'});
+}
+
+const processNewOrganizationForm = async (req, res) => {
+    const { name, description, contactEmail } = req.body; // get the form data from the request body, this assumes that the form fields are named 'name', 'description', and 'contactEmail'
+    const logoFilename = 'placeholder-logo.png'; // Use the placeholder logo for all new organizations
+
+    const organizationId = await createOrganization(name, description, contactEmail, logoFilename);
+    res.redirect(`/organization/${organizationId}`); // redirect to the details page of the newly created organization, this assumes that there is a route defined to handle GET requests to /organization/:id which will render the organization details page using the showOrganizationDetailsPage controller
+};
+
+export { organizationsController, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm };

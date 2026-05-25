@@ -14,6 +14,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
+app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies (for form submissions)
+app.use(express.json()); // Middleware to parse JSON bodies (for API requests)
+
 // Make nodeEnv available to all EJS templates via res.locals
 app.use((req, res, next) => {
     res.locals.nodeEnv = process.env.NODE_ENV?.toLowerCase() || 'production';
