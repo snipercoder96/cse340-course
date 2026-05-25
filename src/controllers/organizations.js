@@ -1,6 +1,7 @@
 import { response } from "express";
 import { getAllOrganizations, getOrganizationDetails, createOrganization } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
+import flash from '../middleware/flash.js';
 
 const organizationsController = async (req, res) => {
     try {
@@ -24,7 +25,7 @@ const showOrganizationDetailsPage = async (req, res) => {
 const showNewOrganizationForm = async (req, res) => {
     const title = 'Add New Organization';
 
-    res.render('new-organization', { title, page: 'new-organization'});
+    res.render('new-organization', { title, page: 'new-organization' });
 }
 
 const processNewOrganizationForm = async (req, res) => {
@@ -35,6 +36,7 @@ const processNewOrganizationForm = async (req, res) => {
         // Option 1: re-render the form with an error message
         return res.render('new-organization', {
             title: 'Add a New Organization',
+            page: 'new-organization',
             error: 'All fields are required.',
             formData: { name, description, contactEmail }
         });
@@ -49,12 +51,13 @@ const processNewOrganizationForm = async (req, res) => {
             contactEmail,
             logoFilename
         );
+        req.flash('success', 'Organization added successfully!'); // check error
         res.redirect(`/organization/${organizationId}`);
     } catch (err) {
         console.error(err);
         res.status(500).send('Error creating organization');
     }
 };
-  
+
 
 export { organizationsController, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm };

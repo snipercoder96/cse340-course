@@ -604,3 +604,73 @@ label {
         scroll-behavior: auto !important;
     }
 }
+
+/* Alert Styles */
+:root {
+    --alert-success-color: #155724;
+    --alert-success-bg: #d4edda;
+    --alert-success-border: #c3e6cb;
+    
+    --alert-error-color: #721c24;
+    --alert-error-bg: #f8d7da;
+    --alert-error-border: #f5c6cb;
+    
+    --alert-warning-color: #856404;
+    --alert-warning-bg: #fff3cd;
+    --alert-warning-border: #ffeeba;
+    
+    --alert-info-color: #0c5460;
+    --alert-info-bg: #d1ecf1;
+    --alert-info-border: #bee5eb;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert.success {
+    color: var(--alert-success-color);
+    background-color: var(--alert-success-bg);
+    border-color: var(--alert-success-border);
+}
+
+.alert.error {
+    color: var(--alert-error-color);
+    background-color: var(--alert-error-bg);
+    border-color: var(--alert-error-border);
+}
+
+.alert.warning {
+    color: var(--alert-warning-color);
+    background-color: var(--alert-warning-bg);
+    border-color: var(--alert-warning-border);
+}
+
+.alert.info {
+    color: var(--alert-info-color);
+    background-color: var(--alert-info-bg);
+    border-color: var(--alert-info-border);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --alert-success-color: #d1e7dd;
+        --alert-success-bg: #0f5132;
+        --alert-success-border: #badbcc;
+        
+        --alert-error-color: #f8d7da;
+        --alert-error-bg: #842029;
+        --alert-error-border: #f5c2c7;
+        
+        --alert-warning-color: #fff3cd;
+        --alert-warning-bg: #664d03;
+        --alert-warning-border: #ffecb5;
+        
+        --alert-info-color: #cff4fc;
+        --alert-info-bg: #055160;
+        --alert-info-border: #b6effb;
+    }
+}
