@@ -2,7 +2,7 @@ import express from 'express';
 
 import { homeController } from './src/controllers/index.js';
 import { organizationsController, processNewOrganizationForm, showEditOrganizationForm, processEditOrganizationForm} from './src/controllers/organizations.js';
-import { projectController, showProjectDetailsPage }  from './src/controllers/projects.js';
+import { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm }  from './src/controllers/projects.js';
 import { categoriesController, showSingleCategory }  from './src/controllers/categories.js';
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
 import { showOrganizationDetailsPage, showNewOrganizationForm, organizationValidationRules } from './src/controllers/organizations.js';
@@ -24,6 +24,8 @@ router.get('/edit-organization/:id', showEditOrganizationForm); // shows form to
 router.post('/edit-organization/:id', organizationValidationRules, processEditOrganizationForm);// this route will handle the form submission for editing an existing organization, it will be a POST route because it will update the organization details in the database, and we will also implement validation rules for the form submission similar to the ones we have for creating a new organization
 router.get('/project/:id', showProjectDetailsPage);
 router.get('/category/:id', showSingleCategory);
+router.get('/new-project', showNewProjectForm); // shows the form to create a new project
+router.post('/new-project', processNewProjectForm); // this route will handle the form submission for creating a new project
 // error-handling routes
 router.get('/test-error', testErrorPage, globalErrorHandler); // just to test the 500 error page, this route will intentionally throw an error to demonstrate the error handling mechanism
 router.get('/errors', allErrorRoutesController, globalErrorHandler); // this handles any route that is not defined above, it will trigger the 404 error page, and if there is any error in the process it will be handled by the globalErrorHandler
