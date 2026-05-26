@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { homeController } from './src/controllers/index.js';
-import { organizationsController, processNewOrganizationForm } from './src/controllers/organizations.js';
+import { organizationsController, processNewOrganizationForm, showEditOrganizationForm, processEditOrganizationForm} from './src/controllers/organizations.js';
 import { projectController, showProjectDetailsPage }  from './src/controllers/projects.js';
 import { categoriesController, showSingleCategory }  from './src/controllers/categories.js';
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
@@ -19,6 +19,9 @@ router.get('/categories', categoriesController);
 router.get('/organization/:id', showOrganizationDetailsPage);
 router.get('/new-organization', showNewOrganizationForm); // shows new form to create a new organization, this is a GET route because it just renders the form, the actual creation of the organization will be handled in a POST route that will be defined in the future when we implement the form submission functionality
 router.post('/new-organization', organizationValidationRules, processNewOrganizationForm);
+router.get('/edit-organization/:id', showEditOrganizationForm); // shows form to edit an existing organization
+
+router.post('/edit-organization/:id', organizationValidationRules, processEditOrganizationForm);// this route will handle the form submission for editing an existing organization, it will be a POST route because it will update the organization details in the database, and we will also implement validation rules for the form submission similar to the ones we have for creating a new organization
 router.get('/project/:id', showProjectDetailsPage);
 router.get('/category/:id', showSingleCategory);
 // error-handling routes

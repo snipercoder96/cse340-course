@@ -1,5 +1,5 @@
 import { response } from "express";
-import { getAllOrganizations, getOrganizationDetails, createOrganization } from '../models/organizations.js';
+import { getAllOrganizations, getOrganizationDetails, createOrganization, updateOrganization } from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 import flash from '../middleware/flash.js';
 import { body, validationResult } from 'express-validator';
@@ -75,7 +75,42 @@ const organizationValidationRules = [
         .normalizeEmail()
   ];
 
+const showEditOrganizationForm = async (req, res) => { // just shows the form visible to users
+    const organizationId = req.params.id;
+    const organizationDetails = await getOrganizationDetails(organizationId);
+
+    const title = 'Edit Organization';
+    res.render('edit-organization', { title, organizationDetails, page: 'Edit-organization' });
+};
+
+// this processEditOrganizationForm function will handle the form submission for editing an existing organization, it will be a POST route because it will update the organization details in the database, and we will also implement validation rules for the form submission similar to the ones we have for creating a new organization
+const processEditOrganizationForm = async (req, res) => {
+
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        // Validation failed - loop through errors
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+
+        // Redirect back to the edit organization form
+        return res.redirect(`/edit-organization/${req.params.id}`);
+    }
+
+    const organizationId = req.params.id;
+    const { name, description, contactEmail, logoFilename } = req.body;
+
+    await updateOrganization(organizationId, name, description, contactEmail, logoFilename);
+
+    // Set a success flash message
+    req.flash('success', 'Organization updated successfully!');
+
+    res.redirect(`/organization/${organizationId}`);
+};
+
+
+
 
 export { 
-    organizationsController, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidationRules 
+    organizationsController, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidationRules, showEditOrganizationForm, processEditOrganizationForm
 };
