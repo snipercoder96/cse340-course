@@ -3,7 +3,7 @@ import express from 'express';
 import { homeController } from './src/controllers/index.js';
 import { organizationsController, processNewOrganizationForm, showEditOrganizationForm, processEditOrganizationForm} from './src/controllers/organizations.js';
 import { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm }  from './src/controllers/projects.js';
-import { categoriesController, showSingleCategory }  from './src/controllers/categories.js';
+import { categoriesController, showSingleCategory, showAssignCategoriesForm, processAssignCategoriesForm }  from './src/controllers/categories.js';
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
 import { showOrganizationDetailsPage, showNewOrganizationForm, organizationValidationRules } from './src/controllers/organizations.js';
 import { servicesController } from './src/controllers/services.js';
@@ -26,6 +26,11 @@ router.get('/project/:id', showProjectDetailsPage);
 router.get('/category/:id', showSingleCategory);
 router.get('/new-project', showNewProjectForm); // shows the form to create a new project
 router.post('/new-project', processNewProjectForm); // this route will handle the form submission for creating a new project
+
+
+router.get('/assign-categories/:projectId', showAssignCategoriesForm);
+router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+
 // error-handling routes
 router.get('/test-error', testErrorPage, globalErrorHandler); // just to test the 500 error page, this route will intentionally throw an error to demonstrate the error handling mechanism
 router.get('/errors', allErrorRoutesController, globalErrorHandler); // this handles any route that is not defined above, it will trigger the 404 error page, and if there is any error in the process it will be handled by the globalErrorHandler

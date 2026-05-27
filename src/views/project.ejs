@@ -19,16 +19,17 @@
               <p><strong>Description:</strong>
                   <%= project.description %>
               </p>
-              <% if (project.categories && project.categories.length > 0) { %>
-              <p><strong>Categories:</strong>
-                  <% project.categories.forEach(function(cat) { %>
-                      <a href="/category/<%= cat.category_id %>"><%= cat.name %></a>
-                  <% }); %>
-              </p>
-              <% } %>
-              <% } else { %>
-                <p>Project not found.</p>
-                <%} %>
+               <% if (project.categories && project.categories.length > 0) { %>
+               <p><strong>Categories:</strong>
+                   <% project.categories.forEach(function(cat) { %>
+                       <a href="/category/<%= cat.category_id %>"><%= cat.name %></a>
+                   <% }); %>
+               </p>
+               <% } %>
+                <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a>
+               <% } else { %>
+                 <p>Project not found.</p>
+                 <%} %>
         
     </main>
 <%- include('partials/footer') %>
