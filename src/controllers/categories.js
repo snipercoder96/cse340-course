@@ -111,7 +111,7 @@ const showEditCategoryForm = async (req, res) => {
         return res.status(400).send('Invalid category ID');
     }
 
-    const category = await getSingleCategory(categoryId);
+    const category = await getSingleCategory(categoryId); // general fetching of the category to be edited
     if (!category) {
         res.render('errors/404', { title: 'Category Not Found', page: 'errors/404' });
         return;
@@ -131,9 +131,12 @@ const validateEditCategoryForm = [
         .trim()
         .isLength({ max: 255 })
         .withMessage('Category description must be less than 255 characters'),
-    body('logoFilename')
-        .optional()
+    body('logo_filename')
+        .notEmpty()
+        .withMessage('Logo filename is required')
         .trim()
+        .isLength({ max: 255 })
+        .withMessage('Logo filename must be less than 255 characters')  
 ];
 
 const processEditCategoryForm = async (req, res) => {
@@ -141,7 +144,12 @@ const processEditCategoryForm = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const title = 'Edit Category';
-        const category = req.body;
+        const category = {
+            category_id: req.params.id,
+            name: req.body.category_name,          // template reads category.name
+            description: req.body.category_description, // template reads category.description
+            logo_filename: req.body.logo_filename  // template reads category.logo_filename
+        };
         res.render('edit-category', { title, page: 'edit-category', category, errors: errors.array() });
         return;
     }
@@ -152,8 +160,8 @@ const processEditCategoryForm = async (req, res) => {
     }
 
     try {
-        const { name, description, logoFilename } = req.body;
-        await editExistingCategory(categoryId, name, description, logoFilename);
+        const { category_name, category_description, logo_filename } = req.body;
+        await editExistingCategory(categoryId, category_name, category_description, logo_filename);
         req.flash('success', 'Category updated successfully.');
         res.redirect('/categories');
     } catch (error) {

@@ -5,17 +5,17 @@
     <form action="/edit-category/<%=category.category_id%>" method="POST">
         <div>
             <label for="category_name">Category Name:</label>
-            <input type="text" id="category_name" name="category_name" value="<%=category.category_name%>" required>
+            <input type="text" id="category_name" name="category_name" value="<%=category.name%>" required>
         </div>
         <div>
             <label for="category_description">Category Description:</label>
             <textarea id="category_description" name="category_description"
-                required><%=category.category_description%></textarea>
+                required><%=category.description%></textarea>
         </div>
-<div>
-    <label for="logoFilename">Logo Filename:</label>
-    <input type="text" id="logoFilename" name="logoFilename" value="<%=category.logo_filename%>" optional>
-</div>
+        <div>
+            <label for="logo_filename">Logo Filename:</label>
+            <input type="text" id="logo_filename" name="logo_filename" value="<%=category.logo_filename%>" required>
+        </div>
         <button type="submit">Update Category</button>
     </form>
-    <%-include('partials/footer.ejs')%>
+<%-include('partials/footer.ejs')%>

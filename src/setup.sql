@@ -132,7 +132,7 @@ CREATE TABLE category (
     category_id SERIAL PRIMARY KEY,       -- Auto-incrementing ID
     name VARCHAR(100) UNIQUE NOT NULL,  -- Category name must be unique
     description TEXT NOT NULL,            -- Category description
-    logo_filename VARCHAR(255) NOT NULL   -- Logo filename
+    logo_filename VARCHAR(255) NOT NULL   -- Logo filename not null
 );
 
 -- Insert sample categories
