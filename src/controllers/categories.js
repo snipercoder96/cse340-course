@@ -47,15 +47,40 @@ const showAssignCategoriesForm = async (req, res) => {
 };
 
 const processAssignCategoriesForm = async (req, res) => {
-    const projectId = req.params.projectId;
-    const selectedCategoryIds = req.body.categoryIds || [];
 
-    // Ensure selectedCategoryIds is an array
-    const categoryIdsArray = Array.isArray(selectedCategoryIds) ? selectedCategoryIds : [selectedCategoryIds];
-    await updateCategoryAssignments(projectId, categoryIdsArray);
-    req.flash('success', 'Categories updated successfully.');
-    res.redirect(`/project/${projectId}`);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const projectId = req.params.projectId;
+        const projectDetails = await getProjectDetails(projectId);
+        const categories = await getAllCategories();
+        const assignedCategories = await getCategoriesByServiceProjectId(projectId);
+        const title = 'Assign Categories to Project';
+        res.render('assign-categories', { title, page: 'assign-categories', projectId, projectDetails, categories, assignedCategories, errors: errors.array() });
+        return;
+    }
+
+    try{
+        const projectId = req.params.projectId;
+        const selectedCategoryIds = req.body.categoryIds || [];
+
+        // Ensure selectedCategoryIds is an array
+        const categoryIdsArray = Array.isArray(selectedCategoryIds) ? selectedCategoryIds : [selectedCategoryIds];
+        await updateCategoryAssignments(projectId, categoryIdsArray);
+        req.flash('success', 'Categories updated successfully.');
+        res.redirect(`/project/${projectId}`);
+    } catch (error) {
+        console.error('Error updating category assignments:', error.stack || error);
+        req.flash('error', 'Failed to update category assignments. Please try again.');
+        res.redirect(`/assign-categories/${req.params.projectId}`);
+    }
+    
 };
+
+const validateAssignCategoriesForm = [
+    body('categoryIds')
+        .isArray({ min: 1 })
+        .withMessage('At least one category must be selected')
+];
 
 const showAddCategoryForm = async (req, res) => {
     const title = 'Add New Category';
@@ -84,25 +109,23 @@ const processAddCategoryForm = async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const title = 'Add New Category';
-        const category = req.body;
+        const category = req.body; 
         res.render('new-category', { title, page: 'add-category', category, errors: errors.array() });
         return;
     }
 
     try {
         const { name, description, logoFilename } = req.body;
-        const logoFilenameValue = logoFilename === '' ? '' : logoFilename;
-        await editExistingCategory(categoryId, name, description, logoFilenameValue);
-        req.flash('success', 'Category updated successfully.');
+        const logoFilenameValue = logoFilename === '' ? null : logoFilename;
+        await insertNewCategory(name, description, logoFilenameValue); 
+        req.flash('success', 'Category added successfully.');
         res.redirect('/categories');
     } catch (error) {
-        console.error('Error updating category:', error.stack || error);
-        req.flash('error', 'Failed to update category. Please try again.');
-        res.redirect(`/edit-category/${categoryId}`);
+        console.error('Error adding category:', error.stack || error);
+        req.flash('error', 'Failed to add category. Please try again.');
+        res.redirect('/new-category'); 
     }
-
 };
-
 
 const showEditCategoryForm = async (req, res) => {
     // Implementation for showing the edit category form would go here
@@ -174,4 +197,4 @@ const processEditCategoryForm = async (req, res) => {
 export { categoriesController, showSingleCategory, showAssignCategoriesForm, 
     processAssignCategoriesForm, showAddCategoryForm, processAddCategoryForm, 
     newCategoryValidationRules, processEditCategoryForm, 
-    showEditCategoryForm, validateEditCategoryForm };
+    showEditCategoryForm, validateEditCategoryForm, validateAssignCategoriesForm };
