@@ -2,7 +2,7 @@ import express from 'express';
 
 import { homeController } from './src/controllers/index.js';
 import { organizationsController, processNewOrganizationForm, showEditOrganizationForm, processEditOrganizationForm} from './src/controllers/organizations.js';
-import { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm }  from './src/controllers/projects.js';
+import { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, showEditProjectForm, processEditProjectForm }  from './src/controllers/projects.js';
 import { categoriesController, showSingleCategory, showAssignCategoriesForm, processAssignCategoriesForm }  from './src/controllers/categories.js';
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
 import { showOrganizationDetailsPage, showNewOrganizationForm, organizationValidationRules } from './src/controllers/organizations.js';
@@ -30,6 +30,9 @@ router.post('/new-project', processNewProjectForm); // this route will handle th
 
 router.get('/assign-categories/:projectId', showAssignCategoriesForm);
 router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+
+router.get('/edit-project/:id', showEditProjectForm); // shows form to edit an existing project
+router.post('/edit-project/:id', processEditProjectForm); // this route will handle the form submission for editing an existing project, it will be a POST route because it will update the project details in the database, and we will also implement validation rules for the form submission similar to the ones we have for creating a new project
 
 // error-handling routes
 router.get('/test-error', testErrorPage, globalErrorHandler); // just to test the 500 error page, this route will intentionally throw an error to demonstrate the error handling mechanism

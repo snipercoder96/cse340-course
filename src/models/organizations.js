@@ -37,7 +37,7 @@ const getOrganizationDetails = async (organizationId) => {
 
 /**
  * Creates a new organization in the database.
- * @param {string} name - The name of the organization.
+ * @param {string} title - The name of the organization.
  * @param {string} description - A description of the organization.
  * @param {string} contactEmail - The contact email for the organization.
  * @param {string} logoFilename - The filename of the organization's logo.
@@ -86,4 +86,26 @@ const updateOrganization = async (organizationId, name, description, contactEmai
   return result.rows[0].organization_id;
 };
 
-export { getAllOrganizations, getOrganizationDetails, createOrganization, updateOrganization };  
+const updateProject = async (projectId, organizationId, title, description, location, project_date) => {
+  const query = `
+    UPDATE project
+    SET organization_id = $2, title = $3, description = $4, location = $5, project_date = $6
+    WHERE project_id = $1
+    RETURNING project_id;
+  `;
+
+  const queryParams = [projectId, organizationId, title, description, location, project_date];
+  const result = await db.query(query, queryParams);
+
+  if (result.rows.length === 0) {
+    throw new Error('Project not found');
+  }
+
+  if (process.env.ENABLE_SQL_LOGGING === 'true') {
+    console.log('Updated project with ID:', projectId);
+  }
+
+  return result.rows[0].project_id;
+};
+
+export { getAllOrganizations, getOrganizationDetails, createOrganization, updateOrganization, updateProject };  

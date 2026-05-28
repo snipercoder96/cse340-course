@@ -1,5 +1,8 @@
 import { getUpcomingProjects, getProjectDetails, createProject } from '../models/projects.js';
+import {updateProject} from '../models/organizations.js';
 import { getAllOrganizations } from '../models/organizations.js';
+import flash from '../middleware/flash.js';
+import { validationResult } from 'express-validator';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
@@ -53,4 +56,34 @@ const processNewProjectForm = async (req, res) => {
     }
 };
 
-export { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm };
+// Show edit project form
+const showEditProjectForm = async (req, res) => {
+    const projectId = req.params.id;
+    const projectDetails = await getProjectDetails(projectId);
+    const organizations = await getAllOrganizations();
+    const title = 'Edit Project';
+    res.render('edit-project', { title, projectDetails, organizations, page: 'edit-project' });
+};
+
+// Process edit project form
+const processEditProjectForm = async (req, res) => {
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        results.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+        return res.redirect(`/edit-project/${req.params.id}`);
+    }
+
+    const projectId = req.params.id;
+    const { project_id, organizationId, title, description, location, project_date } = req.body;
+    console.log('DEBUG: req.body:', req.body);
+    console.log('DEBUG: project_date:', project_date);
+
+    await updateProject(projectId, organizationId, title, description, location, project_date);
+
+    req.flash('success', 'Project updated successfully!');
+    res.redirect(`/project/${projectId}`);
+};
+
+export { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, showEditProjectForm, processEditProjectForm };

@@ -1,5 +1,5 @@
 import { response } from "express";
-import { getAllOrganizations, getOrganizationDetails, createOrganization, updateOrganization } from '../models/organizations.js';
+import { getAllOrganizations, getOrganizationDetails, createOrganization, updateOrganization, updateProject} from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
 import flash from '../middleware/flash.js';
 import { body, validationResult } from 'express-validator';
@@ -73,7 +73,8 @@ const organizationValidationRules = [
         .isEmail()
         .withMessage('Invalid email format')
         .normalizeEmail()
-  ];
+  ]; // this organizationValidationRules array will contain the validation rules for the form fields when creating a new organization, we will use express-validator to define these rules, and we will check for things like required fields, valid email format, and length constraints for the name and description fields.
+  //  We will also use the validationResult function to check for any validation errors and handle them accordingly in the processNewOrganizationForm function.
 
 const showEditOrganizationForm = async (req, res) => { // just shows the form visible to users
     const organizationId = req.params.id;
@@ -108,9 +109,12 @@ const processEditOrganizationForm = async (req, res) => {
     res.redirect(`/organization/${organizationId}`);
 };
 
+const showEditProjectForm = async (req, res) => {
+    const projectId = req.params.id;
+    const projectDetails = await updateProject(projectId);
 
-
-
-export { 
-    organizationsController, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidationRules, showEditOrganizationForm, processEditOrganizationForm
+    res.render('edit-project', { title: 'Edit Project', page: 'edit-project' , projectDetails });
+};
+export {
+    organizationsController, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidationRules, showEditOrganizationForm, processEditOrganizationForm, showEditProjectForm
 };
