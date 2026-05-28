@@ -58,4 +58,15 @@ const getCategoriesByServiceProjectId = async (projectId) => {
     return result.rows;
 };
 
-export { getAllCategories, getSingleCategory, assignCategoryToProject, updateCategoryAssignments, getCategoriesByServiceProjectId };
+const insertNewCategory = async (name, description, logoFilename = null) => {
+    const query = `
+        INSERT INTO category (name, description, logo_filename)
+        VALUES ($1, $2, $3)
+        RETURNING category_id;
+    `;
+
+    const result = await db.query(query, [name, description, logoFilename]);
+    return result.rows[0].category_id; // Return the ID of the newly inserted category 
+};
+
+export { getAllCategories, getSingleCategory, assignCategoryToProject, updateCategoryAssignments, getCategoriesByServiceProjectId, insertNewCategory };
