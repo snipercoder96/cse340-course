@@ -69,4 +69,15 @@ const insertNewCategory = async (name, description, logoFilename = null) => {
     return result.rows[0].category_id; // Return the ID of the newly inserted category 
 };
 
-export { getAllCategories, getSingleCategory, assignCategoryToProject, updateCategoryAssignments, getCategoriesByServiceProjectId, insertNewCategory };
+const editExistingCategory = async (categoryId, name, description, logoFilename) => {
+    const query = `
+        UPDATE category
+        SET name = $1, description = $2, logo_filename = $3
+        WHERE category_id = $4;
+    `;
+
+    const result = await db.query(query, [name, description, logoFilename, categoryId]);
+    return result.rows[0]; // Return the updated category object
+};
+
+export { getAllCategories, getSingleCategory, assignCategoryToProject, updateCategoryAssignments, getCategoriesByServiceProjectId, insertNewCategory, editExistingCategory };

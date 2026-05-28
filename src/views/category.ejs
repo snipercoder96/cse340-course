@@ -9,5 +9,6 @@
         </h2>
         <img src="/images/<%= category.logo_filename %>" alt="<%= category.name %> logo">
         <p>Description: <%= category.description %></p>
+        <a href="/edit-category/<%= category.category_id %>" class="button">Edit Category</a>
     </main>
 <%- include('partials/footer') %>

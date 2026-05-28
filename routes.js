@@ -3,7 +3,7 @@ import express from 'express';
 import { homeController } from './src/controllers/index.js';
 import { organizationsController, processNewOrganizationForm, showEditOrganizationForm, processEditOrganizationForm} from './src/controllers/organizations.js';
 import { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, showEditProjectForm, processEditProjectForm }  from './src/controllers/projects.js';
-import { categoriesController, showSingleCategory, showAssignCategoriesForm, processAssignCategoriesForm, showAddCategoryForm, processAddCategoryForm, newCategoryValidationRules}  from './src/controllers/categories.js';
+import { categoriesController, showSingleCategory, showAssignCategoriesForm, processAssignCategoriesForm, showAddCategoryForm, processAddCategoryForm, newCategoryValidationRules, showEditCategoryForm, validateEditCategoryForm, processEditCategoryForm}  from './src/controllers/categories.js';
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
 import { showOrganizationDetailsPage, showNewOrganizationForm, organizationValidationRules } from './src/controllers/organizations.js';
 import { servicesController } from './src/controllers/services.js';
@@ -27,15 +27,20 @@ router.get('/category/:id', showSingleCategory);
 router.get('/new-project', showNewProjectForm); // shows the form to create a new project
 router.post('/new-project', processNewProjectForm); // this route will handle the form submission for creating a new project
 
-
+/**
+ * @todo: add the validation rules for the assign categories form submission, and also implement the functionality to update the category assignments for a project in the database, this will involve first deleting the existing category assignments for the project and then inserting the new category assignments based on the form submission
+ */
 router.get('/assign-categories/:projectId', showAssignCategoriesForm);
-router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+router.post('/assign-categories/:projectId', processAssignCategoriesForm); 
 
 router.get('/new-category', showAddCategoryForm); // shows the form to create a new category
 router.post('/new-category', newCategoryValidationRules, processAddCategoryForm); // this route will handle the form submission for creating a new category
 
 router.get('/edit-project/:id', showEditProjectForm); // shows form to edit an existing project
 router.post('/edit-project/:id', processEditProjectForm); // this route will handle the form submission for editing an existing project, it will be a POST route because it will update the project details in the database, and we will also implement validation rules for the form submission similar to the ones we have for creating a new project
+
+router.get('/edit-category/:id', showEditCategoryForm); // shows form to edit an existing category
+router.post('/edit-category/:id', validateEditCategoryForm, processEditCategoryForm); // this route will handle the form submission for editing an existing category
 
 // error-handling routes
 router.get('/test-error', testErrorPage, globalErrorHandler); // just to test the 500 error page, this route will intentionally throw an error to demonstrate the error handling mechanism

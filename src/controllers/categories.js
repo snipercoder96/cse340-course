@@ -1,4 +1,4 @@
-import { getAllCategories, getSingleCategory, assignCategoryToProject, updateCategoryAssignments, getCategoriesByServiceProjectId, insertNewCategory } from '../models/categories.js';
+import { getAllCategories, getSingleCategory, assignCategoryToProject, updateCategoryAssignments, getCategoriesByServiceProjectId, insertNewCategory, editExistingCategory } from '../models/categories.js';
 import { getProjectDetails, } from '../models/projects.js';
 import flash from '../middleware/flash.js';
 import { body, validationResult } from 'express-validator';
@@ -91,19 +91,79 @@ const processAddCategoryForm = async (req, res) => {
 
     try {
         const { name, description, logoFilename } = req.body;
-        // Convert empty string to null for logoFilename (since optional field should be null when empty)
-        const logoFilenameValue = logoFilename === '' ? null : logoFilename;
-        await insertNewCategory(name, description, logoFilenameValue);
-        req.flash('success', 'Category added successfully.');
+        const logoFilenameValue = logoFilename === '' ? '' : logoFilename;
+        await editExistingCategory(categoryId, name, description, logoFilenameValue);
+        req.flash('success', 'Category updated successfully.');
         res.redirect('/categories');
-    }
-
-    catch (error) {
-        console.error('Error adding category:', error.stack || error);
-        req.flash('error', 'Failed to add category. Please try again.');
-        res.redirect('/new-category');
+    } catch (error) {
+        console.error('Error updating category:', error.stack || error);
+        req.flash('error', 'Failed to update category. Please try again.');
+        res.redirect(`/edit-category/${categoryId}`);
     }
 
 };
 
-export { categoriesController, showSingleCategory, showAssignCategoriesForm, processAssignCategoriesForm, showAddCategoryForm, processAddCategoryForm, newCategoryValidationRules };
+
+const showEditCategoryForm = async (req, res) => {
+    // Implementation for showing the edit category form would go here
+    const categoryId = parseInt(req.params.id); // get the id from the browser that it points to
+    if (isNaN(categoryId)) {
+        return res.status(400).send('Invalid category ID');
+    }
+
+    const category = await getSingleCategory(categoryId);
+    if (!category) {
+        res.render('errors/404', { title: 'Category Not Found', page: 'errors/404' });
+        return;
+    }
+    const title = 'Edit Category';
+    res.render('edit-category', { title, page: 'edit-category', category });
+};
+
+const validateEditCategoryForm = [
+    body('category_name')
+        .notEmpty()
+        .trim()
+        .isLength({ min: 3, max: 100 })
+        .withMessage('Category name must be between 3 and 100 characters'),
+    body('category_description')
+        .optional()
+        .trim()
+        .isLength({ max: 255 })
+        .withMessage('Category description must be less than 255 characters'),
+    body('logoFilename')
+        .optional()
+        .trim()
+];
+
+const processEditCategoryForm = async (req, res) => {
+    // Implementation for processing the edit category form would go here
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        const title = 'Edit Category';
+        const category = req.body;
+        res.render('edit-category', { title, page: 'edit-category', category, errors: errors.array() });
+        return;
+    }
+
+    const categoryId = parseInt(req.params.id);
+    if (isNaN(categoryId)) {
+        return res.status(400).send('Invalid category ID');
+    }
+
+    try {
+        const { name, description, logoFilename } = req.body;
+        await editExistingCategory(categoryId, name, description, logoFilename);
+        req.flash('success', 'Category updated successfully.');
+        res.redirect('/categories');
+    } catch (error) {
+        console.error('Error updating category:', error.stack || error);
+        req.flash('error', 'Failed to update category. Please try again.');
+        res.redirect(`/edit-category/${categoryId}`);
+    }
+};
+
+export { categoriesController, showSingleCategory, showAssignCategoriesForm, 
+    processAssignCategoriesForm, showAddCategoryForm, processAddCategoryForm, 
+    newCategoryValidationRules, processEditCategoryForm, 
+    showEditCategoryForm, validateEditCategoryForm };

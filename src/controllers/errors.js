@@ -1,6 +1,6 @@
 // renders the 404 page when a route is not found and handles all errors globally, including 500 errors
 const errorController = (req, res) => {
-    res.status(404).render('404', { title: 'Page Not Found', page: '404' });
+    res.status(404).render('errors/404', { title: 'Page Not Found', page: 'errors/404' });
 };
 
 // Catch-all route for 404 errors
