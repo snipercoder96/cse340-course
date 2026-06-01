@@ -181,3 +181,37 @@ INSERT INTO project_category (project_id, category_id) VALUES
 (13, 3), -- Senior Home Assistance → Community Service
 (14, 1), -- Neighborhood Clean-Up → Environmental
 (15, 2); -- Literacy Tutoring → Educational
+
+
+ALTER TABLE category ADD COLUMN description TEXT DEFAULT '' NOT NULL;
+ALTER TABLE category ADD COLUMN logo_filename VARCHAR(255) DEFAULT '' NOT NULL;
+
+UPDATE category SET logo_filename = 'green-earth.jpg' WHERE name = 'Environmental';
+UPDATE category SET logo_filename = 'bright-minds.jpg' WHERE name = 'Educational';
+UPDATE category SET logo_filename = 'community-builders.jpg' WHERE name = 'Community Service';
+
+SELECT category_id, name, description, logo_filename
+FROM category
+WHERE category_id = 1;
+
+CREATE TABLE roles (
+    role_id SERIAL PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL,
+    role_description TEXT
+);
+
+INSERT INTO roles (role_name, role_description) VALUES 
+    ('user', 'Standard user with basic access'),
+    ('admin', 'Administrator with full system access');
+
+-- Verify the data was inserted
+SELECT * FROM roles;
+
+CREATE TABLE users (
+    user_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role_id INTEGER REFERENCES roles(role_id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
