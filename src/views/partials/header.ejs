@@ -43,11 +43,19 @@
                     <span aria-hidden="false">🛠️</span> Services
                 </a>
             </li>
-            <li role="none">
-                <a href="/register" role="menuitem" aria-current="<%= page === 'register' ? 'page' : 'false' %>">
-                    <span aria-hidden="false">📝</span> Register
-                </a>
-            </li>
+            <% if (isLoggedIn) { %>
+                <li role="none">
+                    <a href="/logout" role="menuitem">
+                        <span aria-hidden="false">🔓</span> Logout
+                    </a>
+                </li>
+            <% } else { %>
+                <li role="none">
+                    <a href="/login" role="menuitem" aria-current="<%= page === 'login' ? 'page' : 'false' %>">
+                        <span aria-hidden="false">🔐</span> Login
+                    </a>
+                </li>
+            <% } %>
         </ul>
     </nav>
     <% const messages=flash(); %>

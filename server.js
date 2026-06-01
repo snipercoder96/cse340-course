@@ -36,6 +36,11 @@ app.use(express.json()); // Middleware to parse JSON bodies (for API requests)
 
 // Make nodeEnv available to all EJS templates via res.locals
 app.use((req, res, next) => {
+    res.locals.isLoggedIn = false;
+    if (req.session && req.session.user) {
+        res.locals.isLoggedIn = true;
+    }
+    
     res.locals.nodeEnv = process.env.NODE_ENV?.toLowerCase() || 'production';
     next();
 });

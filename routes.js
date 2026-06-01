@@ -7,7 +7,7 @@ import { categoriesController, showSingleCategory, showAssignCategoriesForm, pro
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
 import { showOrganizationDetailsPage, showNewOrganizationForm, organizationValidationRules } from './src/controllers/organizations.js';
 import { servicesController } from './src/controllers/services.js';
-import { showUserRegistrationForm, processUserRegistrationForm } from './src/controllers/users.js';
+import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout } from './src/controllers/users.js';
 
 
 const router = express.Router();
@@ -44,7 +44,11 @@ router.get('/edit-category/:id', showEditCategoryForm); // shows form to edit an
 router.post('/edit-category/:id', validateEditCategoryForm, processEditCategoryForm); // this route will handle the form submission for editing an existing category
 
 router.get('/register', showUserRegistrationForm); // shows the form to register a new user
-router.post('/register', processUserRegistrationForm); // this route will handle the form submission for registering a new user, it will be a POST route because it will create a new user in the database, and we will also implement validation rules for the form submission similar to the ones we have for creating a new organization and project
+router.post('/register', processUserRegistrationForm); // this route will handle the form submission for registering a new user
+
+router.get('/login', showLoginForm); // shows the form to login
+router.post('/login', processLoginForm); // this route will handle the form submission for logging in
+router.get('/logout', processLogout); // this route will handle the logout request
 
 // error-handling routes
 router.get('/test-error', testErrorPage, globalErrorHandler); // just to test the 500 error page, this route will intentionally throw an error to demonstrate the error handling mechanism
