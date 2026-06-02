@@ -7,7 +7,7 @@ import { categoriesController, showSingleCategory, showAssignCategoriesForm, pro
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
 import { showOrganizationDetailsPage, showNewOrganizationForm, organizationValidationRules } from './src/controllers/organizations.js';
 import { servicesController } from './src/controllers/services.js';
-import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout } from './src/controllers/users.js';
+import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, showDashboard, requireUser } from './src/controllers/users.js';
 
 
 const router = express.Router();
@@ -47,8 +47,11 @@ router.get('/register', showUserRegistrationForm); // shows the form to register
 router.post('/register', processUserRegistrationForm); // this route will handle the form submission for registering a new user
 
 router.get('/login', showLoginForm); // shows the form to login
-router.post('/login', processLoginForm); // this route will handle the form submission for logging in
+router.post('/login', validateLoginInput, processLoginForm); // this route will handle the form submission for logging in
 router.get('/logout', processLogout); // this route will handle the logout request
+
+router.get('/dashboard', requireUser, showDashboard); // protected route that requires authentication, it will show the dashboard page for logged in users, we will implement the requireUser middleware to check if the user is authenticated before allowing access to this route
+
 
 // error-handling routes
 router.get('/test-error', testErrorPage, globalErrorHandler); // just to test the 500 error page, this route will intentionally throw an error to demonstrate the error handling mechanism

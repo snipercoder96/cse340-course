@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import { body } from 'express-validator';
 import {createUser} from '../models/users.js';
 import {authenticateUser} from '../models/users.js';
 import session from 'express-session';
@@ -35,6 +36,16 @@ const showLoginForm = (req, res) => {
     res.render('login', { title: 'Login', page: 'login' });
 };
 
+// i forgot to validate the email and password before trying to authenticate the user, so i added that in the processLoginForm function
+const validateLoginInput = [
+    body('email')
+        .isEmail()
+        .withMessage('Please enter a valid email address.'),
+    body('password')
+        .isLength({ min: 6 })
+        .withMessage('Password must be at least 6 characters long.')
+];
+
 const processLoginForm = async (req, res) => {
     const { email, password } = req.body; // destructure email and password from the request body into separate variables for easier access and readability
 
@@ -69,4 +80,23 @@ const processLogout = async (req, res) => {
     }
     res.render('logout', { title: 'Logout', page: 'logout' });
 };
-export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout };
+
+const requireUser = (req, res, next) => {
+    if (!req.session || !req.session.user) {// if there is no session or no user info in the session, it means the user is not authenticated, so we redirect them to the login page with an error message
+        req.flash('error', 'You must be logged in to access this page.');
+        return res.redirect('/login');
+    }
+    next(); // if the user is authenticated, we call the next middleware function to continue processing the request
+};
+
+const showDashboard = (req, res) => {
+    const user = req.session.user;
+    res.render('dashboard', {
+        title: 'Dashboard',
+        page: 'dashboard',
+        name: user.name,
+        email: user.email
+    });
+};
+
+export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, requireUser, showDashboard };

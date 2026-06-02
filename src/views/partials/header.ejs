@@ -49,6 +49,11 @@
                         <span aria-hidden="false">🔓</span> Logout
                     </a>
                 </li>
+                <li role="none">
+                    <a href="/dashboard" role="menuitem" aria-current="<%= page === 'dashboard' ? 'page' : 'false' %>">
+                        <span aria-hidden="false">📊</span> Dashboard
+                    </a>
+                </li>
             <% } else { %>
                 <li role="none">
                     <a href="/login" role="menuitem" aria-current="<%= page === 'login' ? 'page' : 'false' %>">

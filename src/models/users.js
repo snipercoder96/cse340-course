@@ -37,7 +37,7 @@ const findUserByEmail = async (email) => {
         return null; // User not found
     }
 
-    return result.rows[0];
+    return result.rows[0]; // limiting to one user since email should be unique.
 };
 
 const authenticateUser = async (email, password) => {
@@ -50,4 +50,5 @@ const authenticateUser = async (email, password) => {
     return user; // Authentication successful
 };
 
-export { createUser, authenticateUser }; // we just need authenicate user for login only, no need to export findUserByEmail
+
+export { createUser, authenticateUser}; // we just need authenticate user for login only, no need to export findUserByEmail
