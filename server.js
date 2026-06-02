@@ -24,7 +24,7 @@ const app = express();
 app.use(session({
     secret: SESSION_SECRET, // Use the SESSION_SECRET from environment variables for security
     resave: false, // what does this do? - Don't save session if unmodified
-    saveUninitialized: true, // Save uninitialized sessions (new but not modified)
+    saveUninitialized: true, // Save uninitialized sessions (new but not modified), this means that a session will be created for every user, even if they don't log in or interact with the site, which can lead to a large number of unused sessions in the store. Consider setting this to false if you want to only create sessions for users who log in or interact with the site.
     cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
 }));
 
