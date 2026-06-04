@@ -1,7 +1,6 @@
 import { response } from "express";
 import { getAllOrganizations, getOrganizationDetails, createOrganization, updateOrganization, updateProject} from '../models/organizations.js';
 import { getProjectsByOrganizationId } from '../models/projects.js';
-import flash from '../middleware/flash.js';
 import { body, validationResult } from 'express-validator';
 
 const organizationsController = async (req, res) => {

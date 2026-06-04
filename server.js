@@ -6,7 +6,6 @@ import { testConnection } from './src/models/db.js';
 import router from './routes.js';
 import session from 'express-session';
 import flash from './src/middleware/flash.js';
-import flashLocals from './src/middleware/flash.js';
 
 
 // declare constants for environment variables and server configuration
@@ -28,8 +27,7 @@ app.use(session({
     cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
 }));
 
-app.use(flash); // Custom middleware to add flash messaging functionality to the request object
-app.use(flashLocals); // Middleware to make flash messages available in all EJS templates via res.locals
+app.use(flash); // Custom middleware to add flash messaging functionality to the request object and make it available in res.locals
 
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies (for form submissions)
 app.use(express.json()); // Middleware to parse JSON bodies (for API requests)
@@ -40,7 +38,8 @@ app.use((req, res, next) => {
     if (req.session && req.session.user) {
         res.locals.isLoggedIn = true;
     }
-    
+    res.locals.user = req.session.user || null;// Make user info available in all EJS templates via res.locals.user, this will allow us to access the logged-in user's information in our views and conditionally render content based on whether the user is logged in or not
+
     res.locals.nodeEnv = process.env.NODE_ENV?.toLowerCase() || 'production';
     next();
 });

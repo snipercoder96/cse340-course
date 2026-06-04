@@ -24,7 +24,9 @@
                       }) %></li>
                 <% }) %>
         </ul>
-        <p><%= organizationDetails.contact_email %></p> | 
-        <a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a>
+          <p><%= organizationDetails.contact_email %></p>
+          <% if (user && user.role === 'admin') { %>
+              <a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a>
+          <% } %>
     </main>
 <%- include('partials/footer') %>

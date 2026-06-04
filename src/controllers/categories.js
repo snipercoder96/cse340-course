@@ -1,6 +1,5 @@
 import { getAllCategories, getSingleCategory, assignCategoryToProject, updateCategoryAssignments, getCategoriesByServiceProjectId, insertNewCategory, editExistingCategory } from '../models/categories.js';
 import { getProjectDetails, } from '../models/projects.js';
-import flash from '../middleware/flash.js';
 import { body, validationResult } from 'express-validator';
 
 

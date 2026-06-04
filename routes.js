@@ -7,7 +7,7 @@ import { categoriesController, showSingleCategory, showAssignCategoriesForm, pro
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
 import { showOrganizationDetailsPage, showNewOrganizationForm, organizationValidationRules } from './src/controllers/organizations.js';
 import { servicesController } from './src/controllers/services.js';
-import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, showDashboard, requireUser } from './src/controllers/users.js';
+import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, showDashboard, requireUser, requireRole } from './src/controllers/users.js';
 
 
 const router = express.Router();
@@ -18,11 +18,11 @@ router.get('/services', servicesController);
 router.get('/projects', projectController);
 router.get('/categories', categoriesController);
 router.get('/organization/:id', showOrganizationDetailsPage);
-router.get('/new-organization', showNewOrganizationForm); // shows new form to create a new organization, this is a GET route because it just renders the form, the actual creation of the organization will be handled in a POST route that will be defined in the future when we implement the form submission functionality
-router.post('/new-organization', organizationValidationRules, processNewOrganizationForm);
-router.get('/edit-organization/:id', showEditOrganizationForm); // shows form to edit an existing organization
+router.get('/new-organization', requireRole('admin'), showNewOrganizationForm); // shows new form to create a new organization, this is a GET route because it just renders the form, the actual creation of the organization will be handled in a POST route that will be defined in the future when we implement the form submission functionality
+router.post('/new-organization', requireRole('admin'), organizationValidationRules, processNewOrganizationForm);
+router.get('/edit-organization/:id', requireRole('admin'), showEditOrganizationForm); // shows form to edit an existing organization
 
-router.post('/edit-organization/:id', organizationValidationRules, processEditOrganizationForm);// this route will handle the form submission for editing an existing organization, it will be a POST route because it will update the organization details in the database, and we will also implement validation rules for the form submission similar to the ones we have for creating a new organization
+router.post('/edit-organization/:id', requireRole('admin'), organizationValidationRules, processEditOrganizationForm);// this route will handle the form submission for editing an existing organization, it will be a POST route because it will update the organization details in the database, and we will also implement validation rules for the form submission similar to the ones we have for creating a new organization
 router.get('/project/:id', showProjectDetailsPage);
 router.get('/category/:id', showSingleCategory);
 router.get('/new-project', showNewProjectForm); // shows the form to create a new project
@@ -31,17 +31,17 @@ router.post('/new-project', processNewProjectForm); // this route will handle th
 /**
  * @todo: add the validation rules for the assign categories form submission, and also implement the functionality to update the category assignments for a project in the database, this will involve first deleting the existing category assignments for the project and then inserting the new category assignments based on the form submission
  */
-router.get('/assign-categories/:projectId', showAssignCategoriesForm);
-router.post('/assign-categories/:projectId', validateAssignCategoriesForm, processAssignCategoriesForm); 
+router.get('/assign-categories/:projectId', requireRole('admin'), showAssignCategoriesForm);
+router.post('/assign-categories/:projectId', requireRole('admin'), validateAssignCategoriesForm, processAssignCategoriesForm); 
 
-router.get('/new-category', showAddCategoryForm); // shows the form to create a new category
-router.post('/new-category', newCategoryValidationRules, processAddCategoryForm); // this route will handle the form submission for creating a new category
+router.get('/new-category', requireRole('admin'), showAddCategoryForm); // shows the form to create a new category
+router.post('/new-category', requireRole('admin'), newCategoryValidationRules, processAddCategoryForm); // this route will handle the form submission for creating a new category
 
-router.get('/edit-project/:id', showEditProjectForm); // shows form to edit an existing project
-router.post('/edit-project/:id', processEditProjectForm); // this route will handle the form submission for editing an existing project, it will be a POST route because it will update the project details in the database, and we will also implement validation rules for the form submission similar to the ones we have for creating a new project
+router.get('/edit-project/:id', requireRole('admin'), showEditProjectForm); // shows form to edit an existing project
+router.post('/edit-project/:id', requireRole('admin'), processEditProjectForm); // this route will handle the form submission for editing an existing project, it will be a POST route because it will update the project details in the database, and we will also implement validation rules for the form submission similar to the ones we have for creating a new project
 
-router.get('/edit-category/:id', showEditCategoryForm); // shows form to edit an existing category
-router.post('/edit-category/:id', validateEditCategoryForm, processEditCategoryForm); // this route will handle the form submission for editing an existing category
+router.get('/edit-category/:id', requireRole('admin'), showEditCategoryForm); // shows form to edit an existing category
+router.post('/edit-category/:id', requireRole('admin'), validateEditCategoryForm, processEditCategoryForm); // this route will handle the form submission for editing an existing category
 
 router.get('/register', showUserRegistrationForm); // shows the form to register a new user
 router.post('/register', processUserRegistrationForm); // this route will handle the form submission for registering a new user

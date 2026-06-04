@@ -45,8 +45,10 @@
                 organizations that align with your passions. Each group offers unique
                 opportunities to serve and grow.
             </p>
-            <a href="/projects" class="button">View Current Projects</a> |
-            <a href="/new-organization">Add a new organization</a>
+            <a href="/projects" class="button">View Current Projects</a>
+            <% if (user && user.role === 'admin') { %>
+                | <a href="/new-organization">Add a new organization</a>
+            <% } %>
         </section>
     </main>
 

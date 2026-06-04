@@ -1,7 +1,6 @@
 import { getUpcomingProjects, getProjectDetails, createProject } from '../models/projects.js';
 import {updateProject} from '../models/organizations.js';
 import { getAllOrganizations } from '../models/organizations.js';
-import flash from '../middleware/flash.js';
 import { validationResult } from 'express-validator';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;

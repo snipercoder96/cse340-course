@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { body } from 'express-validator';
-import {createUser} from '../models/users.js';
-import {authenticateUser} from '../models/users.js';
+import { createUser } from '../models/users.js';
+import { authenticateUser } from '../models/users.js';
 import session from 'express-session';
 
 // just shows the form to register a new user
@@ -30,6 +30,23 @@ const processUserRegistrationForm = async (req, res) => {
         req.flash('error', 'An error occurred during registration. Please try again.');
         res.redirect('/register');
     }
+}
+
+const requireRole = (role) => {
+    return (req, res, next) => {
+        if (!req.session || !req.session.user) {
+            req.flash('error', 'You must be logged in to access this page.');
+            return res.redirect('/login');
+        }
+
+        if (req.session.user && req.session.user.role === role) {
+            return next();
+
+        } else {
+            req.flash('error', 'You do not have permission to access this page.');
+            return res.redirect('/login');
+        }
+    };
 }
 
 const showLoginForm = (req, res) => {
@@ -99,4 +116,4 @@ const showDashboard = (req, res) => {
     });
 };
 
-export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, requireUser, showDashboard };
+export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, requireUser, showDashboard, requireRole };

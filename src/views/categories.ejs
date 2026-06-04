@@ -37,8 +37,10 @@
         Choose a category above to explore related projects and organizations.
         Every effort counts toward building a stronger, healthier community.
       </p>
-       <a href="/organizations" class="button">Meet Our Partner Organizations</a> | 
-       <a href="/new-category" class="button">Create a New Category</a>
+         <a href="/organizations" class="button">Meet Our Partner Organizations</a>
+         <% if(user && user.role === 'admin') { %>
+         <a href="/new-category" class="button">Create a New Category</a>
+         <% } %>
     </section>
   </main>
 
