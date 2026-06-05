@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import { body } from 'express-validator';
 import { createUser } from '../models/users.js';
-import { authenticateUser } from '../models/users.js';
+import { authenticateUser, showAllUsersPermissions } from '../models/users.js';
 import session from 'express-session';
 
 // just shows the form to register a new user
@@ -106,17 +106,37 @@ const requireUser = (req, res, next) => {
     next(); // if the user is authenticated, we call the next middleware function to continue processing the request
 };
 
-const showDashboard = (req, res) => {
+const showDashboard = async (req, res) => {
     const user = req.session.user;
     const isLoggedIn = !!req.session.user;
+    const usersPermissions = await showAllUsersPermissions(); 
+
     res.render('dashboard', {
         title: 'Dashboard',
         page: 'dashboard',
         name: user.name,
         email: user.email,
         isLoggedIn,
-        user
+        user,
+        usersPermissions
     });
 };
 
-export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, requireUser, showDashboard, requireRole };
+const displayAllUsersPermissions = async (req, res) => {
+    try {
+        const user = req.session.user;
+        if (user.role_name !== 'admin') {
+            req.flash('error', 'You do not have permission to access this page.');
+            return res.redirect('/login');
+        }
+        const usersPermissions = await showAllUsersPermissions();
+        res.render('show-all-users-access', { title: 'Users Permissions', page: 'users_permissions', usersPermissions });
+    } catch (error) {
+        console.error('Error fetching users permissions:', error);
+        req.flash('error', 'An error occurred while fetching users permissions. Please try again.');
+        res.redirect('/dashboard');
+    }
+}
+
+
+export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, requireUser, showDashboard, requireRole , displayAllUsersPermissions};

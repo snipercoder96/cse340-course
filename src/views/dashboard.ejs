@@ -10,6 +10,11 @@
         </p>
         <p>Username: <%= email %>
         </p>
+        <% if (user && user.role_name==='admin' ) { %>
+                <a href="/show-all-users-access" role="menuitem" aria-current="<%= page === 'admin' ? 'page' : 'false' %>">
+                    <span aria-hidden="false">⚙️</span> Admin Settings
+                </a>
+        <% } %>
 
     </main>
 

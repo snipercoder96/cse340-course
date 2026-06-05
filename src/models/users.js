@@ -54,5 +54,18 @@ const authenticateUser = async (email, password) => {
     return user; // Authentication successful
 };
 
+// this must show when the users is logged in and has admin role, we can check the role in the route handler before calling this function
+const showAllUsersPermissions = async () => {
+    const query = `
+        SELECT u.user_id, u.name, u.email, r.role_name
+        FROM users u
+        JOIN roles r ON u.role_id = r.role_id
+    `;
 
-export { createUser, authenticateUser}; // we just need authenticate user for login only, no need to export findUserByEmail
+    const result = await db.query(query);
+
+    return result.rows;
+};
+
+
+export { createUser, authenticateUser, showAllUsersPermissions}; // we just need authenticate user for login only, no need to export findUserByEmail
