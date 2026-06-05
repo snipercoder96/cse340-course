@@ -25,7 +25,7 @@
                <a href="/category/<%= cat.category_id %>"><%= cat.name %></a>
            <% }); %>
        </p>
-      <% if (user && user.role === 'admin') { %>
+      <% if (user && user.role_name === 'admin') { %>
         <a href="/assign-categories/<%= project.project_id %>">Edit Categories</a> | 
         <a href="/edit-project/<%= project.project_id %>">Edit Project</a>
        <% } %>

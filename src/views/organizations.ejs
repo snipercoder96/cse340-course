@@ -46,7 +46,7 @@
                 opportunities to serve and grow.
             </p>
             <a href="/projects" class="button">View Current Projects</a>
-            <% if (user && user.role === 'admin') { %>
+            <% if (user && user.role_name === 'admin') { %>
                 | <a href="/new-organization">Add a new organization</a>
             <% } %>
         </section>

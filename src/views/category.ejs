@@ -9,7 +9,7 @@
          </h2>
          <img src="/images/<%= category.logo_filename %>" alt="<%= category.name %> logo">
          <p>Description: <%= category.description %></p>
-         <% if (user && user.role === 'admin') { %>
+         <% if (user && user.role_name === 'admin') { %>
              <a href="/edit-category/<%= category.category_id %>" class="button">Edit Category</a>
          <% } %>
     </main>

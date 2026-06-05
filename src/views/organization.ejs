@@ -25,7 +25,7 @@
                 <% }) %>
         </ul>
           <p><%= organizationDetails.contact_email %></p>
-          <% if (user && user.role === 'admin') { %>
+          <% if (user && user.role_name === 'admin') { %>
               <a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a>
           <% } %>
     </main>

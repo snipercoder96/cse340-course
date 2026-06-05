@@ -39,7 +39,7 @@ const requireRole = (role) => {
             return res.redirect('/login');
         }
 
-        if (req.session.user && req.session.user.role === role) {
+        if (req.session.user && req.session.user.role_name === role) {
             return next();
 
         } else {
@@ -108,11 +108,14 @@ const requireUser = (req, res, next) => {
 
 const showDashboard = (req, res) => {
     const user = req.session.user;
+    const isLoggedIn = !!req.session.user;
     res.render('dashboard', {
         title: 'Dashboard',
         page: 'dashboard',
         name: user.name,
-        email: user.email
+        email: user.email,
+        isLoggedIn,
+        user
     });
 };
 

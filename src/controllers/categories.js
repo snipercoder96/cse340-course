@@ -6,7 +6,15 @@ import { body, validationResult } from 'express-validator';
 const categoriesController = async (req, res) => {
     try {
         const categories = await getAllCategories();
-        res.render('categories', { title: 'Project Categories', page: 'categories', categories });
+        const isLoggedIn = !!req.session.user;
+        const user = req.session.user;
+        res.render('categories', { 
+            title: 'Project Categories', 
+            page: 'categories', 
+            categories,
+            isLoggedIn,
+            user 
+        });
     } catch (error) {
         console.error('Error fetching categories:', error.stack || error);
         return res.status(500).send('Internal Server Error');

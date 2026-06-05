@@ -215,3 +215,12 @@ CREATE TABLE users (
     role_id INTEGER REFERENCES roles(role_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO users (name, email, password_hash, role_id)
+SELECT 
+  'test-user', 
+  'admin@example.com', 
+  '$2b$10$pPW74e2w6lBJOgiNmKkSK.CMyNRfmyxRYlSPPKNdYVIQTmd/mQ4Vq', 
+  r.role_id
+FROM roles r
+WHERE r.role_name = 'admin';

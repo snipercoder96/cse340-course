@@ -25,7 +25,7 @@ const createUser = async (name, email, passwordHash) => {
 
 const findUserByEmail = async (email) => {
     const query = `
-        SELECT u.user_id, u.email, u.password_hash, r.role_name
+        SELECT u.user_id, u.name, u.email, u.password_hash, r.role_name
         FROM users u
         JOIN roles r ON u.role_id = r.role_id
         WHERE u.email = $1
@@ -42,7 +42,10 @@ const findUserByEmail = async (email) => {
 };
 
 const authenticateUser = async (email, password) => {
-    const user = await findUserByEmail(email) || null;
+    const user = await findUserByEmail(email);
+    if (!user) {
+        return null; // User not found
+    }
     
     const isPasswordValid = await bcrypt.compare(password, user.password_hash);
     if (!isPasswordValid) { 

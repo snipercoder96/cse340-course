@@ -9,7 +9,15 @@ const NUMBER_OF_UPCOMING_PROJECTS = 5;
 const projectController = async (req, res) => {
     try {
         const projects = await getUpcomingProjects(NUMBER_OF_UPCOMING_PROJECTS); // Fetch upcoming projects
-        res.render('projects', { title: 'Upcoming Service Projects', page: 'projects', projects });
+        const isLoggedIn = !!req.session.user;
+        const user = req.session.user;
+        res.render('projects', { 
+            title: 'Upcoming Service Projects', 
+            page: 'projects', 
+            projects,
+            isLoggedIn,
+            user 
+        });
     } catch (error) {
         console.error('Error fetching projects:', error.stack || error);
         return res.status(500).send('Internal Server Error');
@@ -20,7 +28,15 @@ const showProjectDetailsPage = async (req, res) => {
     try {
         const id = req.params.id;
         const project = await getProjectDetails(id);
-        res.render('project', { title: project.title, page: 'project-details', project });
+        const isLoggedIn = !!req.session.user;
+        const user = req.session.user;
+        res.render('project', { 
+            title: project.title, 
+            page: 'project-details', 
+            project,
+            isLoggedIn,
+            user 
+        });
     } catch (error) {
         console.error('Error fetching project details:', error.stack || error);
         return res.status(500).send('Internal Server Error');

@@ -6,7 +6,15 @@ import { body, validationResult } from 'express-validator';
 const organizationsController = async (req, res) => {
     try {
         const organizations = await getAllOrganizations();
-        res.render('organizations', { title: 'Organizations', organizations, page: 'organizations' });
+        const isLoggedIn = !!req.session.user;
+        const user = req.session.user;
+        res.render('organizations', { 
+            title: 'Organizations', 
+            organizations, 
+            page: 'organizations',
+            isLoggedIn,
+            user 
+        });
     } catch (error) {
         console.error('Error fetching organizations:', error.stack || error);
         return res.status(500).send('Internal Server Error');

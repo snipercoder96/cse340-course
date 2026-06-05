@@ -47,7 +47,7 @@
                             Learn about our partner organizations or explore additional project categories.
                         </p>
                           <a href="/organizations" class="button">Meet Our Partner Organizations</a>
-                          <% if(user && user.role === 'admin') { %>
+                          <% if(user && user.role_name === 'admin') { %>
                               <a href="/new-project" class="button">Add a New Service Project</a>
                           <% } %>
                     </section>
