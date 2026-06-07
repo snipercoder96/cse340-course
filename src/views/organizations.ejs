@@ -30,9 +30,10 @@
                                 See more at <%= org.name %>
                             </a>
                         </p>
-                        <a href="<%= org.contact_email %>">
-                            <%= org.name %>
-                        </a>
+                        <a href="mailto:<%= org.contact_email %>">Contact: <%= org.contact_email %></a>
+                        <% if(user && user.role_name === 'admin') { %>
+                            <p><a href="/edit-organization/<%= org.organization_id %>">Edit Organization</a></p>
+                        <% } %>
                     </article>
                 <% }) %>
             </div></section>

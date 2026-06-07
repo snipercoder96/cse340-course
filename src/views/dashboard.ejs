@@ -11,9 +11,31 @@
         <p>Username: <%= email %>
         </p>
         <% if (user && user.role_name==='admin' ) { %>
-                <a href="/show-all-users-access" role="menuitem" aria-current="<%= page === 'admin' ? 'page' : 'false' %>">
-                    <span aria-hidden="false">⚙️</span> Admin Settings
-                </a>
+            <a href="/show-all-users-access" role="menuitem">
+                <span aria-hidden="false">⚙️</span> Admin Settings
+            </a>
+    
+            <h3>All Users</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% usersPermissions.forEach(u => { %>
+                        <tr>
+                            <td><%= u.user_id %></td>
+                            <td><%= u.name %></td>
+                            <td><%= u.email %></td>
+                            <td><%= u.role_name %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
         <% } %>
 
     </main>
