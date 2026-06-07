@@ -61,15 +61,23 @@
                     </a>
                 </li>
             <% } %>
+            <% if (user && user.role_name==='admin' ) { %>
+                <li role="none">
+                    <a href="/show-all-users-access" role="menuitem"
+                        aria-current="<%= page === 'users_permissions' ? 'page' : 'false' %>">
+                        <span aria-hidden="false">👥</span> All Users
+                    </a>
+                </li>     
+            <% } %>
         </ul>
     </nav>
     <% const messages=flash(); %>
         <% Object.keys(messages).forEach(type=> { %>
             <% if (messages[type].length> 0) { %>
-    
                 <% messages[type].forEach(msg=> { %>
-                    <%= msg %>
-                        <% }); %>
-    
-                            <% } %>
-                                <% }); %>
+                    <div class="alert <%= type %>">
+                        <%= msg %>
+                    </div>
+                    <% }); %>
+                        <% } %>
+                            <% }); %>

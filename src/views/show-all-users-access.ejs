@@ -1,18 +1,42 @@
 <%- include('partials/header') %>
-<main>
-    <h1>All Users</h1>
-    <% if (usersPermissions && usersPermissions.length > 0) { %>
-        <ul>
-            <% usersPermissions.forEach(function(user) { %>
-                <li>
-                    <strong><%= user.name %></strong> - <%= user.email %> (Role: <%= user.role_name %>)
-                </li>
-            <% }); %>
-        </ul>
-    <% } else { %>
-        <p>No users found.</p>
-    <% } %>
-</main>
-<%- include('partials/footer') %>
+    <main id="main-content" role="main">
+        <h1>
+            <%= title %>
+        </h1>
 
-<!--  Fix after implementing the model and controller -->
+        <% if (usersPermissions && usersPermissions.length> 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% usersPermissions.forEach(function(u) { %>
+                        <tr>
+                            <td>
+                                <%= u.user_id %>
+                            </td>
+                            <td>
+                                <%= u.name %>
+                            </td>
+                            <td>
+                                <%= u.email %>
+                            </td>
+                            <td>
+                                <span class="badge badge-<%= u.role_name %>">
+                                    <%= u.role_name %>
+                                </span>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+            <% } else { %>
+                <p>No users found.</p>
+                <% } %>
+    </main>
+    <%- include('partials/footer') %>
