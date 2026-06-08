@@ -224,3 +224,33 @@ SELECT
   r.role_id
 FROM roles r
 WHERE r.role_name = 'admin';
+
+
+-- ========================================
+-- Volunteers Junction Table
+-- ========================================
+-- This table will record which users have volunteered for which projects, along with the date they signed up. It will have foreign keys to both the users and projects tables, and a unique constraint to prevent duplicate volunteer records for the same user and project.
+CREATE TABLE volunteers (
+    volunteer_id SERIAL PRIMARY KEY,       -- Auto-incrementing ID for each volunteer record
+    user_id INT NOT NULL,                  -- FK to users
+    project_id INT NOT NULL,               -- FK to projects
+    volunteered_at TIMESTAMP DEFAULT NOW(),-- Optional: when they signed up
+    CONSTRAINT fk_volunteer_user
+        FOREIGN KEY (user_id)
+        REFERENCES users (user_id)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_volunteer_project
+        FOREIGN KEY (project_id)
+        REFERENCES project (project_id)
+        ON DELETE CASCADE,
+    CONSTRAINT unique_volunteer UNIQUE (user_id, project_id) -- prevents duplicates
+);
+
+
+-- ========================================
+-- Sample Volunteer Data
+-- ========================================
+INSERT INTO volunteers (user_id, project_id) VALUES
+(1, 1),  -- test-user volunteers for Community Park Renovation
+(1, 2),  -- test-user volunteers for School Roof Repair
+(1, 6);  -- test-user volunteers for Urban Garden Setup

@@ -37,7 +37,43 @@
                 </tbody>
             </table>
         <% } %>
-
+        <% if (user && user.role_name==='user' ) { %>
+            <p>You are logged in as a regular user.</p>
+        
+            <h3>Your Volunteered Projects</h3>
+            <% if (volunteerProjects.length===0) { %>
+                <p>You have not signed up for any projects yet.</p>
+                <% } else { %>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Location</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% volunteerProjects.forEach(project=> { %>
+                                <tr>
+                                    <td>
+                                        <%= project.title %>
+                                    </td>
+                                    <td>
+                                        <%= project.location %>
+                                    </td>
+                                    <td>
+                                        <%= new Date(project.project_date).toLocaleDateString() %>
+                                    </td>
+                                    <td>
+                                        <form action="/remove-volunteer/<%= project.project_id %>" method="POST">
+                                            <button type="submit">Remove</button>
+                                        </form>                   
+                                    </td>
+                                </tr>
+                                <% }) %>
+                        </tbody>
+                    </table>
+                    <% } %> <% } %>
     </main>
 
 <%- include('partials/footer') %>

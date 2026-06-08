@@ -2,7 +2,7 @@ import db from "./db.js";
 
 const getAllProjects = async () => {
     const query = `
-        SELECT organization_id, title, description, location, project_date
+        SELECT project_id, organization_id, title, description, location, project_date
         FROM public.project;
     `;
 
@@ -14,6 +14,23 @@ const getAllProjects = async () => {
         throw error;
     }
 }
+
+const getProjectById = async (projectId) => {
+    const query = `
+        SELECT organization_id, title, description, location, project_date
+        FROM public.project
+        WHERE project_id = $1;
+    `;
+
+    try {
+        const result = await db.query(query, [projectId]);
+        return result.rows[0].project_id;
+    } catch (error) {
+        console.error('Error fetching project by ID:', error.message);
+        throw error;
+    }
+}
+
 
 // added new function to get projects by organization ID, this will be used in the organization details page to show the projects associated with that organization
 const getProjectsByOrganizationId = async (organizationId) => {
@@ -131,4 +148,4 @@ const createProject = async (organizationId, title, description, location, proje
     return result.rows[0].project_id;
 }
 
-export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails, createProject, updateProject };  
+export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails, createProject, updateProject, getProjectById };  

@@ -1,0 +1,35 @@
+<%- include('partials/header') %>
+<main>
+    <h1>
+        <%= title %>
+    </h1>
+
+    <form action="/add-volunteer" method="POST">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+    
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+    
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required minlength="6">
+        </div>
+
+        <% projects.forEach(project=> { %>
+            <div>
+                <input type="checkbox" id="project_<%= project.project_id %>" name="project_ids" value="<%= project.project_id %>">
+                <label for="project_<%= project.project_id %>">
+                    <%= project.title %> - <%= project.location %>
+                </label>
+            </div>
+        <% }) %>
+    
+        <button type="submit">Volunteer for this project</button>
+    </form>
+</main>
+<%- include('partials/footer') %>

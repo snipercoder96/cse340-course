@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt';
 import { body } from 'express-validator';
 import { createUser } from '../models/users.js';
-import { authenticateUser, showAllUsersPermissions } from '../models/users.js';
+import { authenticateUser, showAllUsersPermissions, addVolunteer, getVolunteerProjectsByUserId, removeVolunteer} from '../models/users.js';
 import session from 'express-session';
+import { getAllProjects } from '../models/projects.js';
 
 // just shows the form to register a new user
 const showUserRegistrationForm = (req, res) => {
@@ -109,7 +110,8 @@ const requireUser = (req, res, next) => {
 const showDashboard = async (req, res) => {
     const user = req.session.user;
     const isLoggedIn = !!req.session.user;
-    const usersPermissions = await showAllUsersPermissions(); 
+    const usersPermissions = await showAllUsersPermissions();
+    const volunteerProjects = await getVolunteerProjectsByUserId(user.user_id);
 
     res.render('dashboard', {
         title: 'Dashboard',
@@ -118,7 +120,8 @@ const showDashboard = async (req, res) => {
         email: user.email,
         isLoggedIn,
         user,
-        usersPermissions
+        usersPermissions,
+        volunteerProjects
     });
 };
 
@@ -138,5 +141,66 @@ const displayAllUsersPermissions = async (req, res) => {
     }
 }
 
+const showAddVolunteerForm = async (req, res) => {
+    let projects = await getAllProjects(); // assuming you have a function to fetch all projects from the database  
+    res.render('add-volunteer', { title: 'Add Volunteer', page: 'add-volunteer', projects});
+};
 
-export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, requireUser, showDashboard, requireRole , displayAllUsersPermissions};
+const validateAddVolunteerInput = [
+    body('project_ids')
+        .isArray({ min: 1 })
+        .withMessage('Please select at least one project to volunteer for.'),
+    body('email')
+        .isEmail()
+        .withMessage('Please enter a valid email address.')
+        .normalizeEmail()
+        .trim(),
+    body('name')
+        .isLength({ max: 100 })
+        .withMessage('Name must be less than 100 characters long.')
+        .trim(),
+    body('password')
+        .isLength({ min: 6 })
+        .withMessage('Password must be at least 6 characters long.')
+        .trim()
+];
+
+const processAddVolunteerForm = async (req, res) => {
+    const { name, email, password, project_ids } = req.body;
+    console.log('RAW req.body:', req.body);
+
+    // Guard: ensure at least one project was selected
+    if (!project_ids || (Array.isArray(project_ids) && project_ids.length === 0)) {
+        req.flash('error', 'Please select at least one project.');
+        return res.redirect('/add-volunteer');
+    }
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const passwordHash = await bcrypt.hash(password, salt);
+        await addVolunteer({ name, email, passwordHash, project_id: project_ids });
+        req.flash('success', 'Volunteer added successfully!');
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error('Error adding volunteer:', error);
+        req.flash('error', 'An error occurred while adding the volunteer. Please try again.');
+        res.redirect('/add-volunteer');
+    }
+};
+
+const processRemoveVolunteer = async (req, res) => {
+    const { project_id } = req.params;
+    const email = req.session.user.email;
+
+    try {
+        await removeVolunteer({ email, project_id });
+        req.flash('success', 'You have been removed from the project.');
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error('Error removing volunteer:', error);
+        req.flash('error', 'An error occurred while removing you from the project.');
+        res.redirect('/dashboard');
+    }
+};
+
+export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, requireUser, showDashboard, requireRole , displayAllUsersPermissions, showAddVolunteerForm, validateAddVolunteerInput, processAddVolunteerForm, processRemoveVolunteer};

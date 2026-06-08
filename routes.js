@@ -7,7 +7,7 @@ import { categoriesController, showSingleCategory, showAssignCategoriesForm, pro
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
 import { showOrganizationDetailsPage, showNewOrganizationForm, organizationValidationRules } from './src/controllers/organizations.js';
 import { servicesController } from './src/controllers/services.js';
-import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, showDashboard, requireUser, requireRole, displayAllUsersPermissions} from './src/controllers/users.js';
+import { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, validateLoginInput, showDashboard, requireUser, requireRole, displayAllUsersPermissions, showAddVolunteerForm, validateAddVolunteerInput, processAddVolunteerForm, processRemoveVolunteer } from './src/controllers/users.js';
 
 
 const router = express.Router();
@@ -53,6 +53,11 @@ router.get('/logout', processLogout); // this route will handle the logout reque
 router.get('/dashboard', requireUser, showDashboard); // protected route that requires authentication, it will show the dashboard page for logged in users, we will implement the requireUser middleware to check if the user is authenticated before allowing access to this route
 
 router.get('/show-all-users-access', requireRole('admin'), displayAllUsersPermissions); // this route will show a page that lists all users and their permissions, it will be protected by the requireRole middleware to ensure that only users with the admin role can access it
+
+router.get('/add-volunteer', requireRole('user'), showAddVolunteerForm); // this route will show the form to add a new volunteer for a specific project, it will be protected by the requireRole middleware to ensure that only users with the admin role can access it
+router.post('/add-volunteer', requireRole('user'), validateAddVolunteerInput, processAddVolunteerForm); // this route will handle the form submission for adding a new volunteer
+
+router.post('/remove-volunteer/:project_id', requireRole('user'), processRemoveVolunteer);
 
 // error-handling routes
 router.get('/test-error', testErrorPage, globalErrorHandler); // just to test the 500 error page, this route will intentionally throw an error to demonstrate the error handling mechanism

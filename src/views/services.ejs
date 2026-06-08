@@ -82,6 +82,16 @@
             </p>
             <a href="/projects" class="button">Browse Projects</a>
         </section>
+        <% if (user && user.role_name === 'user') { %>
+            <section class="cta">
+                <h2>Looking to Volunteer?</h2>
+                <p>
+                    Sign up to become a volunteer and get matched with projects that
+                    fit your interests and schedule.
+                </p>
+                <a href="/add-volunteer" class="button">Register as a Volunteer</a>
+            </section>
+        <% } %>
     </main>
 
     <%- include('partials/footer') %>
