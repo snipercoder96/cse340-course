@@ -2,7 +2,7 @@ import express from 'express';
 
 import { homeController } from './src/controllers/index.js';
 import { organizationsController, processNewOrganizationForm, showEditOrganizationForm, processEditOrganizationForm} from './src/controllers/organizations.js';
-import { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, showEditProjectForm, processEditProjectForm }  from './src/controllers/projects.js';
+import { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, showEditProjectForm, processEditProjectForm, processVolunteerForProject }  from './src/controllers/projects.js';
 import { categoriesController, showSingleCategory, showAssignCategoriesForm, processAssignCategoriesForm, showAddCategoryForm, processAddCategoryForm, newCategoryValidationRules, showEditCategoryForm, validateEditCategoryForm, processEditCategoryForm, validateAssignCategoriesForm}  from './src/controllers/categories.js';
 import { errorController, allErrorRoutesController, testErrorPage, globalErrorHandler}  from './src/controllers/errors.js';
 import { showOrganizationDetailsPage, showNewOrganizationForm, organizationValidationRules } from './src/controllers/organizations.js';
@@ -57,7 +57,8 @@ router.get('/show-all-users-access', requireRole('admin'), displayAllUsersPermis
 router.get('/add-volunteer', requireRole('user'), showAddVolunteerForm); // this route will show the form to add a new volunteer for a specific project, it will be protected by the requireRole middleware to ensure that only users with the admin role can access it
 router.post('/add-volunteer', requireRole('user'), validateAddVolunteerInput, processAddVolunteerForm); // this route will handle the form submission for adding a new volunteer
 
-router.post('/remove-volunteer/:project_id', requireRole('user'), processRemoveVolunteer);
+router.post('/volunteer/:id', requireUser, processVolunteerForProject);
+router.post('/remove-volunteer/:project_id', requireUser, processRemoveVolunteer);
 
 // error-handling routes
 router.get('/test-error', testErrorPage, globalErrorHandler); // just to test the 500 error page, this route will intentionally throw an error to demonstrate the error handling mechanism

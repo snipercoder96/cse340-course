@@ -26,17 +26,18 @@
                         </h3>
                         <p>
                             <%= org.description %>
-                            <a href="/organization/<%= org.organization_id %>">
-                                See more at <%= org.name %>
-                            </a>
+                                <a href="/organization/<%= org.organization_id %>">
+                                    See more at <%= org.name %>
+                                </a>
                         </p>
                         <a href="mailto:<%= org.contact_email %>">Contact: <%= org.contact_email %></a>
-                        <% if(user && user.role_name === 'admin') { %>
+                        <% if(user && user.role_name==='admin' ) { %>
                             <p><a href="/edit-organization/<%= org.organization_id %>">Edit Organization</a></p>
-                        <% } %>
+                            <% } %>
                     </article>
-                <% }) %>
-            </div></section>
+                    <% }) %>
+            </div>
+        </section>
 
         <!-- Call to action -->
         <section class="cta">
@@ -47,9 +48,9 @@
                 opportunities to serve and grow.
             </p>
             <a href="/projects" class="button">View Current Projects</a>
-            <% if (user && user.role_name === 'admin') { %>
-                | <a href="/new-organization">Add a new organization</a>
-            <% } %>
+            <% if (user && user.role_name==='admin' ) { %>
+                <a href="/new-organization" class="button">Add a new organization</a>
+                <% } %>
         </section>
     </main>
 

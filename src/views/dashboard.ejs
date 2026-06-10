@@ -14,7 +14,7 @@
             <a href="/show-all-users-access" role="menuitem">
                 <span aria-hidden="false">⚙️</span> Admin Settings
             </a>
-    
+
             <h3>All Users</h3>
             <table>
                 <thead>
@@ -26,54 +26,62 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% usersPermissions.forEach(u => { %>
+                    <% usersPermissions.forEach(u=> { %>
                         <tr>
-                            <td><%= u.user_id %></td>
-                            <td><%= u.name %></td>
-                            <td><%= u.email %></td>
-                            <td><%= u.role_name %></td>
+                            <td>
+                                <%= u.user_id %>
+                            </td>
+                            <td>
+                                <%= u.name %>
+                            </td>
+                            <td>
+                                <%= u.email %>
+                            </td>
+                            <td>
+                                <%= u.role_name %>
+                            </td>
                         </tr>
-                    <% }) %>
+                        <% }) %>
                 </tbody>
             </table>
-        <% } %>
-        <% if (user && user.role_name==='user' ) { %>
-            <p>You are logged in as a regular user.</p>
-        
-            <h3>Your Volunteered Projects</h3>
-            <% if (volunteerProjects.length===0) { %>
-                <p>You have not signed up for any projects yet.</p>
-                <% } else { %>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Location</th>
-                                <th>Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% volunteerProjects.forEach(project=> { %>
-                                <tr>
-                                    <td>
-                                        <%= project.title %>
-                                    </td>
-                                    <td>
-                                        <%= project.location %>
-                                    </td>
-                                    <td>
-                                        <%= new Date(project.project_date).toLocaleDateString() %>
-                                    </td>
-                                    <td>
-                                        <form action="/remove-volunteer/<%= project.project_id %>" method="POST">
-                                            <button type="submit">Remove</button>
-                                        </form>                   
-                                    </td>
-                                </tr>
-                                <% }) %>
-                        </tbody>
-                    </table>
-                    <% } %> <% } %>
+            <% } %>
+                <% if (user) { %>
+                    <h3>Your Volunteered Projects</h3>
+                    <% if (volunteerProjects.length===0) { %>
+                        <p>You have not signed up for any projects yet.</p>
+                        <% } else { %>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Title</th>
+                                        <th>Location</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% volunteerProjects.forEach(project=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= project.title %>
+                                            </td>
+                                            <td>
+                                                <%= project.location %>
+                                            </td>
+                                            <td>
+                                                <%= new Date(project.project_date).toLocaleDateString() %>
+                                            </td>
+                                            <td>
+                                                <form action="/remove-volunteer/<%= project.project_id %>"
+                                                    method="POST">
+                                                    <button type="submit">Remove</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                            <% } %>
+                                <% } %>
     </main>
 
-<%- include('partials/footer') %>
+    <%- include('partials/footer') %>

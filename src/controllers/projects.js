@@ -2,6 +2,7 @@ import { getUpcomingProjects, getProjectDetails, createProject } from '../models
 import {updateProject} from '../models/projects.js';
 import { getAllOrganizations } from '../models/organizations.js';
 import { validationResult } from 'express-validator';
+import { getVolunteerProjectsByUserId, addVolunteer } from '../models/users.js';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
@@ -26,16 +27,25 @@ const projectController = async (req, res) => {
 
 const showProjectDetailsPage = async (req, res) => {
     try {
+        
         const id = req.params.id;
         const project = await getProjectDetails(id);
         const isLoggedIn = !!req.session.user;
         const user = req.session.user;
+
+        let isVolunteered = false;
+        if (user) {
+            const volunteerProjects = await getVolunteerProjectsByUserId(user.user_id);
+            isVolunteered = volunteerProjects.some(p => p.project_id === parseInt(id));
+        }
+
         res.render('project', { 
             title: project.title, 
             page: 'project-details', 
             project,
             isLoggedIn,
-            user 
+            user,
+            isVolunteered
         });
     } catch (error) {
         console.error('Error fetching project details:', error.stack || error);
@@ -101,4 +111,24 @@ const processEditProjectForm = async (req, res) => {
     res.redirect(`/project/${projectId}`);
 };
 
-export { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, showEditProjectForm, processEditProjectForm };
+const processVolunteerForProject = async (req, res) => {
+    const { id } = req.params;
+    const user = req.session.user;
+
+    try {
+        await addVolunteer({
+            name: user.name,
+            email: user.email,
+            passwordHash: null,  // existing user — addVolunteer won't use this
+            project_id: id
+        });
+        req.flash('success', 'You have been signed up for this project!');
+        res.redirect(`/project/${id}`);
+    } catch (error) {
+        console.error('Error volunteering for project:', error);
+        req.flash('error', 'An error occurred while signing you up. Please try again.');
+        res.redirect(`/project/${id}`);
+    }
+};
+
+export { projectController, showProjectDetailsPage, showNewProjectForm, processNewProjectForm, showEditProjectForm, processEditProjectForm, processVolunteerForProject };
